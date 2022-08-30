@@ -1,0 +1,170 @@
+@import url(../../index.css);
+
+@media (min-width: 300px) {
+    .Login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        background-color: var(--black);
+        opacity: 0.999;
+
+        color: var(--white);
+        gap: 3vh;
+
+        min-height: 100vh;
+        min-width: 80%;
+        
+    }
+    .Login-form {
+        background-color: var(--violet-semiwhite);
+        opacity: 0.85;
+
+        color: var(--white);
+
+        padding: 1rem 1rem 1rem 1rem ;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border: none;
+        border-radius: 1rem;
+
+        margin-bottom: 20rem;
+
+        gap: 3vh;
+        
+
+    }
+
+    .Login-containerEmail, .Login-containerPassword {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        
+        width: 100%;
+        height: 2rem;
+
+        gap: 3rem
+    }
+
+    #Login-email, #Login-password {
+        outline: none;
+        border-radius: 0.3em;
+
+        max-height: 80%;
+        max-width: 80%;
+
+        transition: 0.5s;
+    }
+
+    #Login-email:hover, #Login-password:hover {
+        cursor: pointer;
+        outline: none;
+
+        max-height: 100%;
+        max-width: 100%;
+    }
+    .Login-btns {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 1em;
+    }
+    .Login-btn{ 
+
+        max-height: 2rem;
+
+        padding: 1vh;
+
+        border: none;
+        border-radius: 99rem;
+
+        background-color: var(--black);
+
+        color: var(--white);
+
+        transition: 0.9s;
+    }
+
+    .Login-btn:hover {
+        cursor: pointer;
+        background-color: var(--red);
+
+        max-height: 3rem;
+    }
+    .Logingoogle-btn {
+        max-height: 2rem;
+
+        padding: 1vh;
+
+        border: none;
+        border-radius: 99rem;
+
+        background-color: var(--red);
+
+        color: var(--white);
+
+        transition: 0.9s;
+    }
+    .Logingoogle-btn:hover {
+        cursor: pointer;
+        background-color: var(--black);
+
+        max-height: 3rem;
+    }
+    .Loginhome-btnContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+
+        min-height: 20%;
+    }
+    .Loginhome-btn {
+        border: none;
+        border-radius: 0.3rem;
+
+        height: 2rem;
+        width: 3rem;
+
+        margin: 1em;
+        padding: 0.5em;
+
+        background-color: var(--red);
+
+        color:  var(--white);
+
+        transition: 0.9s;
+    }
+
+    .Loginhome-btn:hover {
+        cursor: pointer;
+
+        background-color: var(--violet-semiwhite);
+
+        height: 3rem;
+        width: 4rem;
+    }
+
+    .RegisterNow:hover {
+        cursor: pointer;
+    }
+
+    .User-options {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* input{
+    outline: none;
+} */

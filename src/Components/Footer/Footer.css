@@ -1,0 +1,42 @@
+@import './../../index.css';
+
+a {
+  color: var(--white);
+}
+
+.footer--container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  min-width: 100%;
+  background-color: var(--violet-black);
+  user-select: none;
+}
+
+.footer--links{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  
+}
+
+.footer--links:hover{
+  transform: scale(1.1,1.1);
+  font-weight: bold;
+  transition-property: all;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+
+.copyright{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-weight: 100;
+}

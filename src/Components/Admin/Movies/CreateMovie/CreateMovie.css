@@ -1,0 +1,37 @@
+.create--movie--container{
+  display: flex;
+  justify-content: center;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: var(--white);
+  user-select: none;
+}
+.create--movie{
+  min-width: 50rem;
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  border-style: solid;
+  border-color: black;
+  border-radius: 3%;
+}
+.create--movie--form{
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+.create--movie--form--titles{
+  pointer-events:none;
+}
+
+.create--movie--text{
+  pointer-events: none;
+}
+
+.create--movie--form--input{
+
+}
+
+.create--movie--button{
+  
+}

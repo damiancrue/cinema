@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto&family=Roboto+Mono&display=swap');
+
+a {
+    text-decoration: none;
+}
+
+:root{
+    --violet-black: rgb(55, 27, 88);
+    --violet-semiblack: rgb(76, 53, 117);
+    --violet-semiwhite: rgb(91, 75, 138);
+    --violet-white: rgb(120, 88, 166);
+    --white: rgb(228, 228, 228);
+    --black: rgb(12, 12, 12);
+    --red: rgb(180, 46, 46);
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    box-sizing: border-box;
+    background-color: var(--black)
+}
