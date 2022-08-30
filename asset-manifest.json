@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/cinema/static/css/main.2d0bc970.css",
-    "main.js": "/cinema/static/js/main.7b6f76c6.js",
+    "main.css": "/cinema/static/css/main.cd50beee.css",
+    "main.js": "/cinema/static/js/main.bc65d1ff.js",
     "static/js/787.3ac702f9.chunk.js": "/cinema/static/js/787.3ac702f9.chunk.js",
     "static/media/facebookicon.png": "/cinema/static/media/facebookicon.cb44b06fbb711ce87afb.png",
     "static/media/instagramicon.png": "/cinema/static/media/instagramicon.6d6b7b4f36ceb6c16336.png",
@@ -18,17 +18,16 @@
     "static/media/keeping.jpg": "/cinema/static/media/keeping.beb196229468acb61906.jpg",
     "static/media/checkicon.png": "/cinema/static/media/checkicon.ce569e4b2a35391735a9.png",
     "static/media/homeicon.png": "/cinema/static/media/homeicon.ac042fd6dde7c3b50e02.png",
-    "static/media/searchicon.png": "/cinema/static/media/searchicon.d0ae02d702a90b184bd6.png",
     "static/media/batmanvsuperman.jpg": "/cinema/static/media/batmanvsuperman.0dee9b8461ad22df7f5d.jpg",
     "static/media/therevenant.jpg": "/cinema/static/media/therevenant.3c57707a0f40b2024ff2.jpg",
     "static/media/logomain.png": "/cinema/static/media/logomain.4218f7bef640a1ddd701.png",
     "index.html": "/cinema/index.html",
-    "main.2d0bc970.css.map": "/cinema/static/css/main.2d0bc970.css.map",
-    "main.7b6f76c6.js.map": "/cinema/static/js/main.7b6f76c6.js.map",
+    "main.cd50beee.css.map": "/cinema/static/css/main.cd50beee.css.map",
+    "main.bc65d1ff.js.map": "/cinema/static/js/main.bc65d1ff.js.map",
     "787.3ac702f9.chunk.js.map": "/cinema/static/js/787.3ac702f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2d0bc970.css",
-    "static/js/main.7b6f76c6.js"
+    "static/css/main.cd50beee.css",
+    "static/js/main.bc65d1ff.js"
   ]
 }
