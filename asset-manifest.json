@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/cinema/static/css/main.2d0bc970.css",
+    "main.js": "/cinema/static/js/main.2835a953.js",
+    "static/js/787.3ac702f9.chunk.js": "/cinema/static/js/787.3ac702f9.chunk.js",
+    "static/media/facebookicon.png": "/cinema/static/media/facebookicon.cb44b06fbb711ce87afb.png",
+    "static/media/instagramicon.png": "/cinema/static/media/instagramicon.6d6b7b4f36ceb6c16336.png",
+    "static/media/linkedinicon.png": "/cinema/static/media/linkedinicon.58f617a908f4b0e3d86f.png",
+    "static/media/telegramicon.png": "/cinema/static/media/telegramicon.a2de61250843e51fe24d.png",
+    "static/media/tiktokicon.png": "/cinema/static/media/tiktokicon.9644839ca1d3eb2ff4f0.png",
+    "static/media/twittericon.png": "/cinema/static/media/twittericon.41bebd8642c0f59b5914.png",
+    "static/media/whatsappicon.png": "/cinema/static/media/whatsappicon.77216f43d8ed6fcf8c9a.png",
+    "static/media/youtubeicon.png": "/cinema/static/media/youtubeicon.83ddfd2aad7c23337d0e.png",
+    "static/media/warcraft.jpg": "/cinema/static/media/warcraft.0352276d38a96c818a7a.jpg",
+    "static/media/xmenapocalipse.jpg": "/cinema/static/media/xmenapocalipse.89772d094fc406399794.jpg",
+    "static/media/allegiant.jpg": "/cinema/static/media/allegiant.db2630a27975e5248d48.jpg",
+    "static/media/the5thwave.jpg": "/cinema/static/media/the5thwave.634fa3377743c87d395c.jpg",
+    "static/media/keeping.jpg": "/cinema/static/media/keeping.beb196229468acb61906.jpg",
+    "static/media/checkicon.png": "/cinema/static/media/checkicon.ce569e4b2a35391735a9.png",
+    "static/media/homeicon.png": "/cinema/static/media/homeicon.ac042fd6dde7c3b50e02.png",
+    "static/media/searchicon.png": "/cinema/static/media/searchicon.d0ae02d702a90b184bd6.png",
+    "static/media/batmanvsuperman.jpg": "/cinema/static/media/batmanvsuperman.0dee9b8461ad22df7f5d.jpg",
+    "static/media/therevenant.jpg": "/cinema/static/media/therevenant.3c57707a0f40b2024ff2.jpg",
+    "static/media/logomain.png": "/cinema/static/media/logomain.4218f7bef640a1ddd701.png",
+    "index.html": "/cinema/index.html",
+    "main.2d0bc970.css.map": "/cinema/static/css/main.2d0bc970.css.map",
+    "main.2835a953.js.map": "/cinema/static/js/main.2835a953.js.map",
+    "787.3ac702f9.chunk.js.map": "/cinema/static/js/787.3ac702f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2d0bc970.css",
+    "static/js/main.2835a953.js"
+  ]
+}
