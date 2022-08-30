@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { postMovie } from "../../../../Redux/Actions";
 import Footer from "../../../Footer/Footer";
 import Header from "../../../Header/Header";
-import NavBar from "../../../NavBar/NavBar";
 import SocialMedia from "../../../SocialMedia/SocialMedia";
 import "./CreateMovie.css";
 
@@ -85,7 +84,6 @@ function CreateMovie(_requirements) {
   return (
     <div>
       <Header />
-      <NavBar />
       <div className="create--movie--container">
         <div className="create--movie">
           <h1 className="create--movie--text">CreateMovie</h1>
@@ -115,12 +113,12 @@ function CreateMovie(_requirements) {
               );
             })}
             <br />
-            <button className="create--movie--button" type="submit">
+            <button className="admin--button" type="submit">
               Create Movie
             </button>
 
             <Link to="/adminmenu" className="create--movie--button">
-              <div>Go Back</div>
+              <div className="admin--button">Go Back</div>
             </Link>
           </form>
         </div>

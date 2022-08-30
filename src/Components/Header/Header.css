@@ -14,6 +14,7 @@
 }
 
 .header--menu--ico{
+  opacity: 0;
   margin-right: auto;
   margin-left: auto;
   justify-content: flex-start;
@@ -38,7 +39,7 @@
 .header--user--ico:hover{
   background-color: var(--violet-white);
   outline: auto;
-  transform: scale(1.1,1.1);
+  transform: scale(1.5,1.5);
 }
 
 .header--logo--menu:hover{
@@ -48,5 +49,5 @@
 .header--menu--ico:hover{
   background-color: var(--violet-white);
   outline:auto;
-  transform: scale(1.1,1.1);
+  transform: scale(1.5,1.5);
 }

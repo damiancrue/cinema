@@ -1,0 +1,95 @@
+h1{
+  color: white;
+  margin: 2rem;
+}
+
+.delete--movie--container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-width: 100%;
+}
+
+.searchBar--container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete--movie--input--button{
+  display: flex;
+  flex-direction: column;
+}
+
+.delete--movie--input{
+  min-height: 2rem;
+  min-height: 3rem;
+  text-align: center;
+}
+
+.delete--movie--button{
+  color:white;
+  font-size: 2rem;
+  font-weight: 800;
+  min-height: 2rem;
+  margin-left: 0.5rem;
+}
+
+.go--back--button{
+}
+
+
+
+.admin--button {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  width: 7rem;
+  height: 0.5rem;
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.6em;
+  font-weight: bold;
+  margin: 0.5rem auto;
+  padding: 1.5rem 10rem;
+  position: relative;
+  
+}
+
+.admin--button::before,
+.admin--button::after {
+  background: #fff;
+  content: '';
+  position: absolute;
+  z-index: -1;
+}
+
+.admin--button::after {
+  -webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+	transition: all 0.3s;
+  height: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  
+}
+
+.admin--button:hover {
+  color: var(--violet-black);
+
+}
+
+.admin--button:hover:after {
+  height: 100%;
+}

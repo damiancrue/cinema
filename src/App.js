@@ -6,7 +6,6 @@ import MovieDetails from "./Components/MovieDetails/MovieDetails";
 import AdminMenu from "./Components/Admin/AdminMenu/AdminMenu";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
-import NavBar from "./Components/NavBar/NavBar";
 import { AuthProvider } from "./Components/Context/authContext";
 
 import BanUser from "./Components/Admin/Users/BanUser/BanUser.js";
@@ -20,7 +19,6 @@ import DeleteMovie from "./Components/Admin/Movies/DeleteMovie/DeleteMovie.js";
 import EditMovie from "./Components/Admin/Movies/EditMovie/EditMovie.js";
 
 import Error from "./Components/Error/Error";
-
 
 function App() {
   //   React.useEffect(() => {
@@ -42,7 +40,6 @@ function App() {
 
             <Route exact path="login" element={<Login />} />
             <Route exact path="register" element={<Register />} />
-
 
             {/* Admin User Paths */}
             <Route exact path="/adminmenu" element={<AdminMenu />} />

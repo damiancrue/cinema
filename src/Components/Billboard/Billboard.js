@@ -1,10 +1,13 @@
 import "./Billboard.css";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getMovies } from "./../../Redux/Actions/index";
 import { connect } from "react-redux";
 
 function Billboard({ getMovies, movies, moviesFiltered }) {
+
+  // const [moviesAvailable, setMoviesAvailable] = useState([]);
+
   const observer = new IntersectionObserver((entries) => {
     // console.log(entries)
     const entry = entries.map((e) => e.isIntersecting);
@@ -60,17 +63,22 @@ function Billboard({ getMovies, movies, moviesFiltered }) {
 
   useEffect(() => {
     getMovies();
+    // setMoviesAvailable(movies.filter(m => m.active === true))
   }, [getMovies]);
+  console.log(movies)
+  // console.log(moviesAvailable)
 
   return (
     <div className="billboard">
       {/* RENDER MOVIES */}
       {(movies.length > 0 && moviesFiltered.length === 0) ?
         movies.map((m) => (
+          
           // Checkeamos si el estado isVisible es true o false dependiendo del observer
           // <div key={m.movie_id} className={isVisible[index] ? 'billboard--container' : 'billboard--container billboard--container__notrender'} ref={element => movieCards.current[index] = element}>
           // <div key={m.movie_id} className={isVisible[index] ? 'billboard--container' : 'billboard--container billboard--container__notrender'} ref={handleMovieRef}>
-          renderBillboard(m)
+          // movies.active && console.log()
+          m.active && renderBillboard(m)
         ))
       : 
         moviesFiltered.length > 0 ? 
