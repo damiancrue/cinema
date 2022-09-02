@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/cinema/static/css/main.cd50beee.css",
-    "main.js": "/cinema/static/js/main.3b1e9146.js",
+    "main.css": "/cinema/static/css/main.de6f0556.css",
+    "main.js": "/cinema/static/js/main.6d52e38b.js",
     "static/js/787.3ac702f9.chunk.js": "/cinema/static/js/787.3ac702f9.chunk.js",
     "static/media/facebookicon.png": "/cinema/static/media/facebookicon.cb44b06fbb711ce87afb.png",
     "static/media/instagramicon.png": "/cinema/static/media/instagramicon.6d6b7b4f36ceb6c16336.png",
@@ -22,12 +22,12 @@
     "static/media/therevenant.jpg": "/cinema/static/media/therevenant.3c57707a0f40b2024ff2.jpg",
     "static/media/logomain.png": "/cinema/static/media/logomain.4218f7bef640a1ddd701.png",
     "index.html": "/cinema/index.html",
-    "main.cd50beee.css.map": "/cinema/static/css/main.cd50beee.css.map",
-    "main.3b1e9146.js.map": "/cinema/static/js/main.3b1e9146.js.map",
+    "main.de6f0556.css.map": "/cinema/static/css/main.de6f0556.css.map",
+    "main.6d52e38b.js.map": "/cinema/static/js/main.6d52e38b.js.map",
     "787.3ac702f9.chunk.js.map": "/cinema/static/js/787.3ac702f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cd50beee.css",
-    "static/js/main.3b1e9146.js"
+    "static/css/main.de6f0556.css",
+    "static/js/main.6d52e38b.js"
   ]
 }
