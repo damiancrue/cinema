@@ -18,7 +18,12 @@ import CreateMovie from "./Components/Admin/Movies/CreateMovie/CreateMovie.js";
 import DeleteMovie from "./Components/Admin/Movies/DeleteMovie/DeleteMovie.js";
 import EditMovie from "./Components/Admin/Movies/EditMovie/EditMovie.js";
 
+
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.js"
 import Error from "./Components/Error/Error";
+import Header from "./Components/Header/Header";
+import SocialMedia from "./Components/SocialMedia/SocialMedia";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   //   React.useEffect(() => {
@@ -29,12 +34,17 @@ function App() {
     <div className="App">
       <AuthProvider>
         <Router>
+          <Header />
           <Routes>
             <Route exact path="/" element={<Home />} />
 
             <Route exact path="/movie/:id" element={<MovieDetails />} />
 
-            <Route exact path="/adminmenu" element={<AdminMenu />} />
+            <Route exact path="/adminmenu" element={
+              <ProtectedRoute>
+                <AdminMenu />
+              </ProtectedRoute>
+            } />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
 
@@ -42,42 +52,62 @@ function App() {
             <Route exact path="register" element={<Register />} />
 
             {/* Admin User Paths */}
-            <Route exact path="/adminmenu" element={<AdminMenu />} />
-            <Route exact path="adminmenu/createuser" element={<CreateUser />} />
-            <Route
-              exact
-              path="/adminmenu/upgradedemoteusers"
-              element={<UpgradeUser />}
+            <Route exact path="/adminmenu" element={
+              <ProtectedRoute>
+                <AdminMenu />
+              </ProtectedRoute>
+            } />
+            <Route exact path="adminmenu/createuser" element={
+              <ProtectedRoute>
+                <CreateUser />
+              </ProtectedRoute>
+            } />
+            <Route exact path="/adminmenu/upgradedemoteusers" element={
+              <ProtectedRoute> 
+                <UpgradeUser />
+              </ProtectedRoute>
+              }
+
             />
-            <Route
-              exact
-              path="/adminmenu/resetuserpassword"
-              element={<ResetUserPassword />}
+            <Route exact path="/adminmenu/resetuserpassword" element={
+              <ProtectedRoute>
+                <ResetUserPassword />
+              </ProtectedRoute>
+            }
             />
             <Route exact path="/adminmenu/banuser" element={<BanUser />} />
-            <Route
-              exact
-              path="/adminmenu/deleteuser"
-              element={<DeleteUser />}
+            <Route exact path="/adminmenu/deleteuser" element={
+              <ProtectedRoute>
+                <DeleteUser />
+              </ProtectedRoute>
+            }
             />
 
             {/* Admin Movie Paths*/}
-            <Route
-              exact
-              path="/adminmenu/createmovie"
-              element={<CreateMovie />}
+            <Route exact path="/adminmenu/createmovie" element={
+              <ProtectedRoute>
+                <CreateMovie />
+              </ProtectedRoute>
+            }
             />
-            <Route exact path="/adminmenu/editmovie" element={<EditMovie />} />
-            <Route
-              exact
-              path="/adminmenu/deletemovie"
-              element={<DeleteMovie />}
+            <Route exact path="/adminmenu/editmovie" element={
+              <ProtectedRoute>
+                <EditMovie />
+              </ProtectedRoute>
+            } />
+            <Route exact path="/adminmenu/deletemovie" element={
+              <ProtectedRoute>
+                <DeleteMovie />
+              </ProtectedRoute>
+            }
             />
-
+            
             {/* Error Route */}
 
             <Route exact path="/error" element={<Error />} />
           </Routes>
+          <SocialMedia />
+          <Footer />
         </Router>
       </AuthProvider>
     </div>

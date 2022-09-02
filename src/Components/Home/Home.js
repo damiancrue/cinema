@@ -28,8 +28,6 @@ function Home() {
   return (
     <div className="home--container">
       <br />
-      <Header></Header>
-      <br />
       <Carrousel />
       <br />
       <NavBar />
@@ -37,7 +35,6 @@ function Home() {
       <br />
       <Billboard />
 
-      <SocialMedia />
       <br />
       <div className="logout--button--container">
         <div onClick={handleLogOut} className="logout--button">
@@ -45,7 +42,6 @@ function Home() {
         </div>
       </div>
       <br />
-      <Footer />
     </div>
   );
 }

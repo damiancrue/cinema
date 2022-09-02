@@ -14,11 +14,11 @@ export default function SearchBar() {
 
   // SI BORRA LO QUE ESCRIBIO EN LA SEARCHBAR SE VUELVEN A MOSTRAR TODAS LAS PELICULAS
   useEffect(() => {
-    console.log(name)
-    if(name === ''){
+    console.log(name);
+    if (name === "") {
       dispatch(getMovies());
     }
-  }, [name, dispatch])
+  }, [name, dispatch]);
 
   function handleInputChange(e) {
     e.preventDefault();

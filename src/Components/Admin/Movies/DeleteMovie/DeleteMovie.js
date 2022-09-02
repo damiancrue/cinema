@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Footer from "../../../Footer/Footer";
-import Header from "../../../Header/Header";
-import SocialMedia from "../../../SocialMedia/SocialMedia";
 import { getMovieName } from "../../../../Redux/Actions/index.js";
 import { deleteMovie } from "../../../../Redux/Actions/index.js";
 
@@ -14,7 +11,7 @@ function DeleteMovie() {
   const dispatch = useDispatch();
 
   const movie = useSelector((state) => state.movies);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [name, setName] = useState("");
 
   function handleInputChange(e) {
@@ -30,12 +27,11 @@ function DeleteMovie() {
     dispatch(deleteMovie(movie[0].movie_id));
     setName("");
     alert("Movie deleted");
-    navigate('/adminmenu');
+    navigate("/adminmenu");
   }
 
   return (
     <div>
-      <Header />
       <div className="delete--movie--container">
         <h1>Delete Movie</h1>
         <div className="delete--movie--input--button">
@@ -53,8 +49,6 @@ function DeleteMovie() {
           <div className="admin--button">Go Back</div>
         </Link>
       </div>
-      <SocialMedia />
-      <Footer />
     </div>
   );
 }

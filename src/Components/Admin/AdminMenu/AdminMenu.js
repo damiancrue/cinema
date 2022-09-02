@@ -1,14 +1,10 @@
 import React from "react";
 import "./AdminMenu.css";
 import { Link } from "react-router-dom";
-import Header from "../../Header/Header";
-import SocialMedia from "../../SocialMedia/SocialMedia";
-import Footer from "../../Footer/Footer";
 
 function AdminMenu() {
   return (
     <div>
-      <Header />
       <div className="admin--menu--container">
         <div className="admin--menu">
           <div className="admin--menu--header">
@@ -51,8 +47,6 @@ function AdminMenu() {
           <br />
         </div>
       </div>
-      <SocialMedia />
-      <Footer />
     </div>
   );
 }
