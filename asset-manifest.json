@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cinema/static/css/main.ec2006d0.css",
-    "main.js": "/cinema/static/js/main.ac0cb4c0.js",
+    "main.js": "/cinema/static/js/main.3e811a2b.js",
     "static/js/787.3ac702f9.chunk.js": "/cinema/static/js/787.3ac702f9.chunk.js",
     "static/media/banner-elvis.jpg": "/cinema/static/media/banner-elvis.bc55adaaacf0edabeb83.jpg",
     "static/media/banner-black-phone.jpg": "/cinema/static/media/banner-black-phone.8f99c555d1761ee12b1f.jpg",
@@ -12,11 +12,11 @@
     "static/media/banner-crimes-of-the-future.jpg": "/cinema/static/media/banner-crimes-of-the-future.c21f955098b6a710df8e.jpg",
     "index.html": "/cinema/index.html",
     "main.ec2006d0.css.map": "/cinema/static/css/main.ec2006d0.css.map",
-    "main.ac0cb4c0.js.map": "/cinema/static/js/main.ac0cb4c0.js.map",
+    "main.3e811a2b.js.map": "/cinema/static/js/main.3e811a2b.js.map",
     "787.3ac702f9.chunk.js.map": "/cinema/static/js/787.3ac702f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ec2006d0.css",
-    "static/js/main.ac0cb4c0.js"
+    "static/js/main.3e811a2b.js"
   ]
 }
