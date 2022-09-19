@@ -1,52 +1,95 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as randomId } from "uuid";
 
-import { getMovieName } from "../../../../Redux/Actions/index.js";
-import { deleteMovie } from "../../../../Redux/Actions/index.js";
+import { getAllMovies } from "../../../../Redux/Actions/index.js";
+import { deleteMovie, activateMovie } from "../../../../Redux/Actions/index.js";
+
+import Loading from "../../../Loading/Loading.js";
 
 import "./DeleteMovie.css";
 
 function DeleteMovie() {
   const dispatch = useDispatch();
 
-  const movie = useSelector((state) => state.movies);
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
+  useEffect(() => {
+    dispatch(getAllMovies());
+  }, [dispatch]);
 
-  function handleInputChange(e) {
-    e.preventDefault();
-    console.log(e.target.value);
-    setName(e.target.value);
+  const allMovies = useSelector((state) => state.allMovies);
+
+  function handleDelete(e) {
+    dispatch(deleteMovie(e));
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    dispatch(getMovieName(name));
-    console.log(movie);
-    dispatch(deleteMovie(movie[0].movie_id));
-    setName("");
-    alert("Movie deleted");
-    navigate("/adminmenu");
+  function handleActivate(e) {
+    dispatch(activateMovie(e));
   }
 
   return (
-    <div>
-      <div className="delete--movie--container">
-        <h1>Delete Movie</h1>
-        <div className="delete--movie--input--button">
-          <input
-            className="delete--movie--input"
-            type="text"
-            placeholder="Search a movie to deactivate"
-            onChange={(e) => handleInputChange(e)}
-          ></input>
-          <div className="admin--button" onClick={(e) => handleSubmit(e)}>
-            Delete!
-          </div>
+    <div className="edit-product-main-container">
+      <div className="edit-product-sub-container">
+        <h1>Activate or Deactivate Movie</h1>
+        <div className="delete-movies">
+          {allMovies ? (
+            <div key={randomId()} className="movie-cards-container">
+              {allMovies?.map((movie) => {
+                return (
+                  <div key={randomId()} className="admin-product">
+                    <div
+                      key={randomId()}
+                      className={
+                        movie.active
+                          ? "movie-card-active"
+                          : "movie-card-inactive"
+                      }
+                    >
+                      <img
+                        className="admin-movie-img"
+                        alt={movie.poster}
+                        key={randomId()}
+                        src={movie.poster}
+                      />
+                      <div key={randomId()} className="admin-movie-info">
+                        <h3 key={randomId()}>{movie.title}</h3>
+                        {movie.active === true ? (
+                          <p key={randomId()}>Movie active</p>
+                        ) : (
+                          <p key={randomId()}>Movie inactive</p>
+                        )}
+                      </div>
+
+                      <div key={randomId()} className="admin-buttons-container">
+                        <div key={randomId()} className="another-container">
+                          <button
+                            key={randomId()}
+                            className="delete-product-button"
+                            onClick={() => handleActivate(movie.movie_id)}
+                          >
+                            Activate
+                          </button>
+                          <button
+                            key={randomId()}
+                            className="delete-product-button"
+                            onClick={() => handleDelete(movie.movie_id)}
+                          >
+                            Deactivate
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <Loading />
+          )}
         </div>
+
         <Link to="/adminmenu" className="go--back--button">
-          <div className="admin--button">Go Back</div>
+          <button className="admin-buttons">Go Back</button>
         </Link>
       </div>
     </div>

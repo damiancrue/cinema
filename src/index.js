@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './Redux/Store/index';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import store from "./Redux/Store/index";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     {/* Comenté el strict mode para que me deje de renderizar 2 veces
         Si quieren descomentenlo, igualmente en producción no pasaría por lo que no habría problema de recursos / optimización */}
     {/* <React.StrictMode> */}
-      <App />
+    <App />
     {/* </React.StrictMode> */}
   </Provider>
 );

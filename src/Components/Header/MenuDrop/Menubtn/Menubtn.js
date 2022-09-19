@@ -1,18 +1,14 @@
-
 import React from "react"
+
+import MenuIcon from '@mui/icons-material/Menu';
+
 import "./Menubtn.css"
-
-
-import iconSource from "../../../../Icons/iconSource";
-const menuIcon = iconSource[5];
-
-
 
 const Toggle = (props) => {
     return(
-        <div id="toggle">
+        <div id="toggle" className={props.className}>
             <button onClick={props.click}>
-                <img src={menuIcon.image} alt={menuIcon.alt}  className="toggle-btn"/>
+                <MenuIcon fontSize='large' />
             </button>
         </div>
     )

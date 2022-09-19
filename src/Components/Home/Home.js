@@ -1,49 +1,22 @@
 import { React } from "react";
 
-import Header from "../Header/Header";
-import NavBar from "../NavBar/NavBar";
+import Filters from "../Filters/Filters";
 import Carrousel from "../Carrousel/Carrousel";
 import Billboard from "./../Billboard/Billboard";
-import SocialMedia from "../SocialMedia/SocialMedia";
-import Footer from "../Footer/Footer";
-import FilterBy from "./../FilterBy/FilterBy";
 
 import "./Home.css";
 
-import { useAuth } from "../Context/authContext";
+// import { useAuth } from "../Context/authContext";
 
-import { useNavigate } from "react-router-dom";
-
-function Home() {
-  const { user, logOut } = useAuth();
-  console.log(user);
-
-  const navigate = useNavigate();
-
-  const handleLogOut = async () => {
-    await logOut();
-    navigate("/login");
-  };
-
+export default function Home() {
   return (
     <div className="home--container">
-      <br />
+      {/* COMPONENTE CARROUSEL - Contiene el slide con las imágenes promocionales */}
       <Carrousel />
-      <br />
-      <NavBar />
-      <FilterBy />
-      <br />
+      {/* COMPONENTE Filters - Contiene el componente SEARCHBAR y el FILTERBY */}
+      <Filters />
+      {/* COMPONENTE BILLBOARD - Contiene el catálogo de películas */}
       <Billboard />
-
-      <br />
-      <div className="logout--button--container">
-        <div onClick={handleLogOut} className="logout--button">
-          Log Out
-        </div>
-      </div>
-      <br />
     </div>
   );
 }
-
-export default Home;

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import "./Sidebar.css"
@@ -7,32 +6,42 @@ const Sidebar = (props) => {
 
     const closeHandler = (e) => {
         e.preventDefault()
-        setSidebarClass("sidebar close")
+        setSidebarClass("sidebar--close")
         setTimeout(() => {
             props.close()
-        },)
-        
+        })
+
     }
-    return(
+    return (
 
         <div className={sidebarClass}>
             <button id="close" onClick={closeHandler}><p className="closebtn-text">&times;</p></button>
-            <ul className="Sidebar-options">
-                <li><Link to="/">
-                <p>Promotions</p>
-                </Link>
-                <li><Link to="/">
-                <p>Contacto</p>
-                </Link>
+            <ul className="sidebar--options">
+                <li className='sidebar--items'onClick={closeHandler}>
+                    <Link to="/cart">
+                        <p>MY CART</p>
+                    </Link>
                 </li>
-                <li><Link to="/">
-                <p>Acerca de</p>
-                </Link>
+                <li className='sidebar--items'onClick={closeHandler}>
+                    <Link to="/products">
+                        <p>PRODUCTS</p>
+                    </Link>
                 </li>
-                <li><Link to="/">
-                <p>Ayuda</p>
-                </Link>
+                <li className='sidebar--items'onClick={closeHandler}>
+                    <Link to="/schedule">
+                        <p>SCHEDULES</p>
+                    </Link>
                 </li>
+                <li className='sidebar--items'onClick={closeHandler}>
+                    <Link to="/contact">
+                        <p>CONTACT</p>
+                    </Link>
+                </li>
+                <li className='sidebar--items'onClick={closeHandler}>
+                    <Link to="/about">
+                        <p>ABOUT US</p>
+                    </Link>
+
                 </li>
             </ul>
         </div>

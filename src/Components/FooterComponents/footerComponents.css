@@ -1,0 +1,21 @@
+/* @import url(../../index.css);
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto&family=Roboto+Mono&display=swap");
+ */
+/* header {
+  color: #ffffff99;
+  align-items: center;
+  justify-self: center;
+  text-shadow: #ffffff 0px 0px 5px;
+  width: 100%;
+} */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto&family=Roboto+Mono&display=swap");
+.footerComponentText {
+  width: 80vw;
+  margin: 6em auto;
+  text-align: justify;
+  color: #ffffffcc;
+  font-family: "Oswald", "Roboto";
+  background-color: var(--grey);
+  padding: 1em;
+  border-radius: 5px;
+}

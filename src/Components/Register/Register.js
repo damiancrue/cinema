@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
+import {newUser} from "../../Redux/Actions";
+import { useDispatch } from "react-redux";
 
 import "../Register/Register.css";
+import axios from "axios";
 
 export default function Register() {
   const [user, setUser] = useState({
@@ -15,6 +18,7 @@ export default function Register() {
 
   const navigate = useNavigate();
   const { signUp } = useAuth();
+  const dispatch =useDispatch();
 
   const handleHome = () => {
     navigate("/");
@@ -31,8 +35,9 @@ export default function Register() {
     setError("");
     try {
       await signUp(user.email, user.password, user.name);
-      // await
-      navigate("/adminmenu");
+      dispatch(newUser({name:user.name,email: user.email }))
+      //ToDo: Validar credencials y admin en esta instancia
+      navigate("/");
     } catch (error) {
       console.log(error.message);
       if (error.code === "auth/invalid-email") {
@@ -50,52 +55,48 @@ export default function Register() {
     // console.log(user)
   };
   return (
-    <div>
-      <div className="Registerhome-btncontainer">
-        <button className="Registerhome-btn" onClick={handleHome}>
-          Home
+    <div className="login--container">
+      <h1 className="login--title">REGISTER</h1>
+      <form className="login--form" onSubmit={(e) => handleSubmit(e)}>
+        <div className="login--container--email">
+          <label name="Name">USERNAME</label>
+          <input
+            id="Register-name"
+            name="name"
+            type="text"
+            className="login--input"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+
+        <div className="login--container--email">
+          <label name="Email">EMAIL</label>
+          <input
+            id="Register-email"
+            name="email"
+            type="email"
+            className="login--input"
+            placeholder="email@email.com"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+
+        <div className="login--container--password">
+          <label name="Password">PASSWORD</label>
+          <input
+            id="Register-password"
+            name="password"
+            type="password"
+            className="login--input"
+            placeholder="6 to 15 characters"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <button className="login--button" type="submit">
+          REGISTER NOW
         </button>
-      </div>
-      <div className="Register-container">
-        <h1 className="Register-title">Register</h1>
-        <form className="Register-form" onSubmit={(e) => handleSubmit(e)}>
-          <div className="Register-name">
-            <label name="Name">Username</label>
-            <input
-              id="Register-name"
-              name="name"
-              type="text"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-
-          <div className="Register-email">
-            <label name="Email">Correo Electronico</label>
-            <input
-              id="Register-email"
-              name="email"
-              type="email"
-              placeholder="email@email.com"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-
-          <div className="Register-password">
-            <label name="Password">Contraseña</label>
-            <input
-              id="Register-password"
-              name="password"
-              type="password"
-              placeholder="6 to 15 characters"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <button className="Register-btn" type="submit">
-            Registrar ahora
-          </button>
-        </form>
-        {error && <p>{error}</p>}
-      </div>
+      </form>
+      {error && <p>{error}</p>}
     </div>
   );
 }

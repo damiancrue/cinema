@@ -1,43 +1,34 @@
 @import './../../index.css';
 
-a {
-  color: var(--white);
-}
-
 .footer--container{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
+  align-items: flex-start;
+  justify-content: space-around;
   min-width: 100%;
-  background-color: var(--violet-black);
-  user-select: none;
+  font-family: 'Oswald', 'Roboto';
+  margin: 2em 0 1em 0;
+}
+
+.footer--links--container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 20vw;
 }
 
 .footer--links{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 1rem;
-  
+  margin-left: 0;
+  transition: all .3s ease-in-out;
 }
 
 .footer--links:hover{
-  transform: scale(1.5,1.5);
   font-weight: bold;
-  transition-property: all;
-  transition-duration: 0.25s;
-  transition-timing-function: ease-in-out;
-  transition-delay: 0s;
+  filter: brightness(200%);
+  margin-left: 1em;
+  transition: all .3s ease-in-out;
 }
 
 .copyright{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-weight: bold;
   color: var(--white);
-  font-weight: 100;
-  margin-bottom: 1rem;
 }

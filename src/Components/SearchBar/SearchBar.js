@@ -1,49 +1,27 @@
-import { React, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getMovieName, getMovies } from "../../Redux/Actions/index.js";
-import iconSource from "../../Icons/iconSource.js";
+import { React } from "react";
 
 import "./SearchBar.css";
 
-const searchIcon = iconSource[3];
 
-export default function SearchBar() {
-  const dispatch = useDispatch();
-
-  const [name, setName] = useState("");
-
-  // SI BORRA LO QUE ESCRIBIO EN LA SEARCHBAR SE VUELVEN A MOSTRAR TODAS LAS PELICULAS
-  useEffect(() => {
-    console.log(name);
-    if (name === "") {
-      dispatch(getMovies());
-    }
-  }, [name, dispatch]);
+export default function SearchBar({filters, setFilters}) {
 
   function handleInputChange(e) {
     e.preventDefault();
-    setName(e.target.value);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    dispatch(getMovieName(name));
-    // setName('');
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
   }
   return (
-    <div className="SearchBar-container">
+    <div className="filters--searchbar--container">
       <input
-        className="SearchBar-input"
+        className="searchbar--input"
         type="text"
-        placeholder="Search..."
+        placeholder="Search a movie"
+        name= 'title'
         onChange={(e) => handleInputChange(e)}
+        value={filters.title === 'default' ? '' : filters.title}
       ></input>
-      <img
-        onClick={(e) => handleSubmit(e)}
-        className="search--icon"
-        src={searchIcon.image}
-        alt={searchIcon.alt}
-      />
     </div>
   );
 }

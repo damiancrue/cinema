@@ -3,7 +3,8 @@ import home from "./homeicon.png";
 import plus from "./plusicon.png";
 import search from "./searchicon.png";
 import user from "./usericon.png";
-import menu from "./menudrop.png"
+import menu from "./menudrop.png";
+
 const iconSource = [
   {
     id: 0,
@@ -30,7 +31,7 @@ const iconSource = [
     image: user,
     alt: "userIcon",
   },
-  {
+    {
     id: 5,
     image: menu,
     alt: "dropdowMenu",

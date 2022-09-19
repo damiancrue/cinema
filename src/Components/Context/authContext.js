@@ -1,83 +1,139 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup
- } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
-import {auth} from "../Firebase/FirebaseAuth"
+import { auth } from "../Firebase/FirebaseAuth";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
-export const authContext = createContext()
+export const authContext = createContext();
 
 export const useAuth = () => {
-    const context = useContext(authContext)
-    return context
-}
+  const context = useContext(authContext);
+  return context;
+};
 
-export function AuthProvider({children}) {
-// const user = {
-// login: true
-// }
-    const [user, setUser] = useState(null)
-    // const [accessToken, setAccessToken]= useState("")
+export function AuthProvider({ children }) {
+  // const user = {
+  // login: true
+  // }
+  const [authUser, setAuthUser] = useState(null);
+  // const [accessToken, setAccessToken]= useState("")
 
-    const signUp =  async (email, password, name) => {
-        await createUserWithEmailAndPassword(auth, email, password)
-        .then(({ user }) => {
-            return user.getIdToken()
-            .then((idToken) => {
-                const newUser = {
-                    email: email,
-                    token: idToken,
-                    username: name,
-                    role: "B"
+  const signUp = async (email, password, name) => {
+    await createUserWithEmailAndPassword(auth, email, password).then(
+      async ({ user }) => {
+        user
+          .getIdToken()
+          .then((idToken) => {
+            window.localStorage.setItem("token", idToken);
+            const newUser = {
+              email: email,
+              token: idToken,
+              username: name,
+              role: "A",
+            };
+            axios
+              .post(
+                "https://api-pf-cine.herokuapp.com/users/createUser",
+                newUser
+              )
+              .then((res) => {
+                setAuthUser({
+                  email: newUser.email,
+                  name: newUser.name,
+                  token: idToken,
+                });
+                if (res.status === 201) {
+                  console.log("Usuario creado");
+                } else if (res.status === 400 || res.status === 500) {
+                  console.log("Usuario no creado, verificar");
+                  console.log(res.data.message);
                 }
-              console.log(idToken);
-              return axios
-                .post("http://localhost:3001/users/createUser", newUser
-                //  {
-                //   headers: {
-                //     Authorization: "Bearer " + idToken,
-                //   },
-                //   role: "B",
-                //   username:"papa",
-                //   email: "papa@papa.com"
-                // }
-                )
-            });
+              })
+              .catch((err) => console.log(err));
           })
-          .then((res) => {
-                if(res.status === 201) {
-                    console.log("Usuario creado")
-                } else if (res.status === 400 ||res.status === 500) {
-                    console.log("Usuario no creado, verificar")
-                    console.log(res.data.message)
-                }
-          }) 
-          .catch((error) => {
-            console.log(error)
-          })
+          .catch((err) => console.log(err));
+      }
+    );
+
+    //   return await user.getIdToken().then(async (idToken) => {
+    //     window.localStorage.setItem("token", idToken);
+    //     const newUser = {
+    //       email: email,
+    //       token: idToken,
+    //       username: name,
+    //       role: "B",
+    //     };
+    //     return await axios.post(
+    //       //"https://api-pf-cine.herokuapp.com/users/createUser",
+    //       "http://localhost:3001/users/createUser",
+    //       newUser
+    //       //  {
+    //       //   headers: {
+    //       //     Authorization: "Bearer " + idToken,
+    //       //   },
+    //       //   role: "B",
+    //       //   username:"papa",
+    //       //   email: "papa@papa.com"
+    //       // }
+    //     );
+    //   });
+    // })
+    // .then((res) => {
+    //   if (res.status === 201) {
+    //     console.log("Usuario creado");
+    //   } else if (res.status === 400 || res.status === 500) {
+    //     console.log("Usuario no creado, verificar");
+    //     console.log(res.data.message);
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  };
+  const logIn = async (email, password) => {
+    const credentials = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then(({ user }) => user.accessToken);
+    if (window.localStorage.getItem("token")) {
+      window.localStorage.removeItem("token");
     }
-    const logIn = async(email, password) => {
-        await signInWithEmailAndPassword(auth, email, password)
+    window.localStorage.setItem("token", credentials);
+  };
+  const logOut = () => {
+    signOut(auth);
+    window.localStorage.clear();
+  };
 
-    }
-    const logOut = () => signOut(auth)
+  const loginGoogle = () => {
+    const googleProvider = new GoogleAuthProvider();
+    return signInWithPopup(auth, googleProvider);
+  };
 
-    const loginGoogle = () => {
-        const googleProvider = new GoogleAuthProvider()
-        return signInWithPopup(auth, googleProvider)
-    }
-
-
-    useEffect(() => {
-        onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser)
-        }, [])
-    })
-    return (
-        <authContext.Provider value={{signUp, logIn, user, logOut, loginGoogle}} >
-            {children}
-        </authContext.Provider>
-    )
+  useEffect(() => {
+    onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        setAuthUser(currentUser);
+      },
+      []
+    );
+  });
+  return (
+    <authContext.Provider
+      value={{ signUp, logIn, authUser, logOut, loginGoogle, setAuthUser }}
+    >
+      {children}
+    </authContext.Provider>
+  );
 }

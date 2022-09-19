@@ -1,106 +1,194 @@
-import React from "react";
 import './MovieDetails.css';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getMovieDetail, delMovieDetail } from './../../Redux/Actions/index';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
-function MovieDetails({ getMovieDetail, delMovieDetail, movieDetail }) {
+import Review from './../Review/Review.js';
 
-  // const movieDetail = {
-  //   movie_id: '3',
-  //   title: 'Nope',
-  //   poster: 'https://hollywoodlife.com/wp-content/uploads/2022/06/Nope-Everything-To-Know-embed-1.jpg',
-  //   description: 'The residents of a lonely gulch in inland California bear witness to an uncanny and chilling discovery.',
-  //   comingsoon: true,
-  //   duration: 130,
-  //   classification: 'PG13',
-  //   rating: 4.3,
-  //   teaser: 'https://www.youtube.com/embed/In8fuzj3gck',
-  //   cast: ['Brandon Perea', 'Keke Palmer', 'Daniel Kaluuya'],
-  //   director: 'Jordan Peele',
-  //   writter: 'Jordan Peele',
-  //   language: 'English',
-  //   genre: ['Thriller', 'Terror'],
-  //   display: ['2D', '3D']
-    // ranking: [{rate: 4, review: 'bla bla'}]
-  // }
+import React, { useEffect, useState } from "react";
 
+import { connect, useDispatch } from 'react-redux';
+
+import { Link, useParams } from "react-router-dom";
+
+import { useAuth } from "../Context/authContext";
+
+import { getMovieDetail, delMovieDetail, getMovieReviews, createReview, setFav } from "./../../Redux/Actions/index";
+
+// ICONS
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
+import StarIcon from '@mui/icons-material/Star';
+
+function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetail, getMovieReviews, createReview }) {
+  const { authUser } = useAuth()
   const { id } = useParams();
-  useEffect(() => {
-    delMovieDetail();
-    getMovieDetail(id);
-  },[getMovieDetail, delMovieDetail, id])
-  
-  if(Object.keys(movieDetail).length > 1){
-    console.log(movieDetail.teaser.split('/')[movieDetail.teaser.split('/').length - 1])
+  //console.log(authUser.uid)
+  const dispatch = useDispatch()
 
+  // ESTADO PARA CHECKEAR SI LLENO LOS CAMPOS DE LA REVIEW
+  const [checkReview, setCheckReview] = useState(true);
+  // ESTADO PARA MOSTRAR O NO EL FORMULARIO DE AGREGAR REVIEW
+  const [addReviewActive, setAddReviewActive] = useState(false);
+  // ESTADO PARA ACTUALIZAR EL PROMEDIO TOTAL DE LAS REVIEWS
+  const [reviewsAverage, setReviewsAverage] = useState(0);
+
+  const totalReviews = movieReviews.reduce((acc, movieReviews) => {
+    return acc + movieReviews.rate;
+  }, 0);
+
+  useEffect(() => {
+    getMovieDetail(id);
+    setReviewsAverage(totalReviews / movieReviews.length);
+    return () => {
+      delMovieDetail();
+    }
+  }, [delMovieDetail, id, getMovieDetail, totalReviews, movieReviews.length])
+
+  // CADA VEZ QUE SE AGREGUE UNA REVIEW SE VA A RENDERIZAR EL COMPONENTE CON EL PROMEDIO TOTAL ACTUALIZADO Y LA NUEVA REVIEW
+  useEffect(() => {
+    getMovieReviews(id);
+  }, [id])
+
+  // FUNCION PARA POSTEAR UNA NUEVA REVIEW
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (e.target.rating.value === 'default' || e.target.review.value === '') {
+      setAddReviewActive(!addReviewActive);
+      setCheckReview(false);
+      return;
+    }
+    const review = {
+      movie_id: id,
+      email: authUser.email,
+      rate: parseInt(e.target.rating.value),
+      review: e.target.review.value
+    }
+    createReview(review);
+    setAddReviewActive(!addReviewActive);
+    setCheckReview(true);
   }
-  
+  //! Clic para agregar a favoritos--------------
+  const movie_id = Number(id)
+  const [val, setVal] = useState(true)
+  const [update, setUpdate] = useState({
+    movie_id, val
+  })
+  const handleClick = () => {
+    setVal(!val)
+    setUpdate({
+      movie_id, val: !val
+    });
+    const user_id = authUser.uid
+    dispatch(setFav(update, user_id))
+  }
+  //!--------------------------------------------
+
   return (
     <>
-      {Object.keys(movieDetail).length > 1 ? 
-        <div className='movie--detail--container'>
-          <h2 className='movie--detail--title'>{movieDetail.title.toUpperCase()}</h2>
-          {/* Cambiando el dato del movieDetail.teaser para que sea la URL que se puede usar como reproductor */}
-          <iframe className='movie--detail--teaser' src={`https://www.youtube.com/embed/${movieDetail.teaser.split('/')[movieDetail.teaser.split('/').length - 1]}`} title={`Trailer of ${movieDetail.title}`} allowFullScreen frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-
-          {/* TODA LA INFORMACIÓN */}
-          <div className='movie--detail--info'>
-            <h3 className='movie--detail--sinopsistitle'>Sinopsis</h3>
-            <p className='movie--detail--description'>{movieDetail.description}</p>
-            <p className='movie--detail--rating'>RATING: {movieDetail.rating} / 5</p> {/* TODO: Agregar el promedio de todos los ratings de la propiedad movieDetail.ranking */}
-            <div className='movie--detail--container--info'>
-              <div className='container--info--submenu'>
-                <h3>Genre</h3>
-                <ul className='info--submenu--list'>
-                  {movieDetail.genre.map((genre, index) => <li className='info--submenu--list--item' key={index}>{genre}</li>)}
-                </ul>
-              </div>
-              <div className='container--info--submenu'>
-                <h3>Display</h3>
-                <ul className='info--submenu--list'>
-                  {movieDetail.display.map((display, index) => <li className='info--submenu--list--item' key={index}>{display}</li>)}
-                </ul>
-              </div>
-              <div className='container--info--submenu'>
-                <h3>Director</h3>
-                <p className='info--submenu--list--item'>{movieDetail.director}</p>
-              </div>
-              <div className='container--info--submenu'>
-                <h3>Cast</h3>
-                <ul className='info--submenu--list'>
-                  {movieDetail.cast.map((actor, index) => <li className='info--submenu--list--item' key={index}>{actor}</li>)}
-                </ul>
-              </div>
-              <div className='container--info--submenu'>
-                <h3>Classification</h3>
-                <p className='info--submenu--list--item'>{movieDetail.classification}</p>
-              </div>
-              <div className='container--info--submenu'>
-                <h3>Duration</h3>
-                <p className='info--submenu--list--item'>{movieDetail.duration} min.</p>
-              </div>
+      {Object.keys(movieDetail).length > 1 ? (
+        <div className="movie--detail--container">
+          {/* FIRST ROW */}
+          <div className='movie--detail--firstrow'>
+            <div className='movie--detail--title--container'>
+              <h2 className="movie--detail--title">
+                {movieDetail.title.toUpperCase()}
+              </h2>
+              {movieDetail.comingSoon && <p className="movie--detail--comingsoon">COMING SOON</p>}
+            </div>
+            {/* Botón para favoritos */}
+            {authUser?.uid ?
+              <button onClick={handleClick} style={!val ? { "color": "yellow" } : null}>
+                <FavoriteSharpIcon ></FavoriteSharpIcon>
+              </button>
+              : ""
+            }
+            <div className="movie--detail--button--container">
+              <Link className="movie--detail--button" to={`/movie/buy/${movieDetail.movie_id}`}>
+                BUY TICKET
+                <ArrowCircleRightIcon fontSize='large' />
+              </Link>
             </div>
           </div>
-          <div className='movie--detail--container--buttons'>
-            <Link className='movie--detail--container--button' to='/'>BACK</Link>
-            <Link className='movie--detail--container--button' to=''>BUY TICKET</Link>
+
+          {/* SECOND ROW - RATING - GENRE - DURATION */}
+          <div className="movie--detail--rating--container">
+            {movieReviews.length === 0 ?
+              <p className='review--notfound'>No reviews so far</p>
+              :
+              <>
+                <p><span className="average--rating">{reviewsAverage.toString().substring(0, 3)}</span>/5</p>
+                <StarIcon className="average--star" />
+              </>
+            }
+          </div>
+
+          {/* THIRD ROW */}
+          <div className="movie--detail--info--container">
+            <img className='movie--detail--poster' src={movieDetail.poster} alt={`poster of ${movieDetail.title}`} />
+            <div className='movie--detail--info'>
+              <ul className="movie--detail--genre--list">
+                {movieDetail && movieDetail.genre.map((genre, i) => <li key={i} className="movie--detail--list--item">{genre}</li>)}
+              </ul>
+              <p className="movie--detail--description">
+                {movieDetail.description}
+              </p>
+              <p className="movie--detail--director">
+                <span className="movie--detail--span">Director: </span>  {movieDetail.director}
+              </p>
+              <p className="movie--detail--cast">
+                <span className="movie--detail--span">Cast: </span>
+                {movieDetail.cast.map((actor, i) => ((i + 1) !== movieDetail.cast.length) ? ` ${actor}, ` : ` ${actor} `)}
+              </p>
+              <p className="movie--detail--classification">
+                <span className="movie--detail--span">Classification: </span>
+                {movieDetail.classification}
+              </p>
+              <ul className="movie--detail--display--list">
+                {movieDetail.display.map((display, i) => (<li className="movie--detail--list--item" key={i}>{display}</li>))}
+              </ul>
+              <p className="movie--detail--duration">
+                <span className="movie--detail--span">Duration: </span>
+                {/* IN MINUTES */}
+                {/* {movieDetail.duration} min. */}
+                {/* IN HOURS */}
+                {movieDetail.duration.toString().length === 2 ? `1h ${movieDetail.duration % 60}min` : `2h ${movieDetail.duration % 60}min`}
+              </p>
+            </div>
+          </div>
+
+          {/* FOURTH ROW */}
+          <div className="movie--detail--teaser--container">
+            <iframe
+              className="movie--detail--teaser"
+              src={`https://www.youtube.com/embed/${movieDetail.teaser.split('/')[movieDetail.teaser.split('/').length - 1]}`}
+              title={`Trailer of ${movieDetail.title}`}
+              allowFullScreen
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+            </iframe>
+          </div>
+
+          <Review movie_id={id} movieReviews={movieReviews} handleSubmit={handleSubmit} addReviewActive={addReviewActive} setAddReviewActive={setAddReviewActive} checkReview={checkReview} />
+
+          {/* BUTTON GO BACK */}
+          <div className="movie--detail--button--container movie--detail--button__goback">
+            <Link className="movie--detail--button" to={'/'}>
+              <ArrowCircleLeftIcon fontSize='large' />
+              GO BACK
+            </Link>
           </div>
         </div>
-        :
+      ) : (
         <h2>No detail available.</h2>
-      }
-
+      )}
     </>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    movieDetail: state.movieDetail
+    movieDetail: state.movieDetail,
+    movieReviews: state.movieReviews
   }
 }
 
-export default connect(mapStateToProps, { getMovieDetail, delMovieDetail })(MovieDetails);
+export default connect(mapStateToProps, { getMovieDetail, delMovieDetail, getMovieReviews, createReview })(MovieDetails);

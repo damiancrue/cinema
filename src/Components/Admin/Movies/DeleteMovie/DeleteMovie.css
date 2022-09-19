@@ -1,95 +1,47 @@
-h1{
-  color: white;
-  margin: 2rem;
-}
+.delete-movies{}
 
-.delete--movie--container{
+.movie-cards-container{
+  max-width: 60vw; 
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  min-width: 100%;
-}
-
-.searchBar--container{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.delete--movie--input--button{
-  display: flex;
-  flex-direction: column;
-}
-
-.delete--movie--input{
-  min-height: 2rem;
-  min-height: 3rem;
-  text-align: center;
-}
-
-.delete--movie--button{
-  color:white;
-  font-size: 2rem;
-  font-weight: 800;
-  min-height: 2rem;
-  margin-left: 0.5rem;
-}
-
-.go--back--button{
-}
-
-
-
-.admin--button {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-
-  width: 7rem;
-  height: 0.5rem;
-  background: none;
-  border: 3px solid #fff;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 1.6em;
-  font-weight: bold;
-  margin: 0.5rem auto;
-  padding: 1.5rem 10rem;
-  position: relative;
-  
-}
-
-.admin--button::before,
-.admin--button::after {
-  background: #fff;
-  content: '';
-  position: absolute;
-  z-index: -1;
-}
-
-.admin--button::after {
-  -webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-	transition: all 0.3s;
-  height: 0;
-  left: 0;
-  top: 0;
   width: 100%;
-  
+  margin: 3rem;
 }
 
-.admin--button:hover {
-  color: var(--violet-black);
-
+.movie-card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 1rem;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  transition: all .3s;
 }
 
-.admin--button:hover:after {
-  height: 100%;
+.movie-card-active{
+  font-size: 1rem;
+}
+
+
+.movie-card-inactive{
+  font-size: 1rem;
+}
+
+.movie-card-buttons-container{
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;
+}
+
+.admin-movie-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

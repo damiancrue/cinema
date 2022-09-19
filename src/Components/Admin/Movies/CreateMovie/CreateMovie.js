@@ -1,100 +1,32 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { postMovie } from "../../../../Redux/Actions";
+import { v4 as randomId } from "uuid";
+
+import {
+  getGenres,
+  getLanguages,
+  getDisplays,
+  createMovie,
+} from "../../../../Redux/Actions";
+
+import Loading from "../../../Loading/Loading";
 
 import "./CreateMovie.css";
 
-import { v4 as randomId } from "uuid";
-
-var value = "";
-var typeOfForm = "";
-
-const requirements = [
-  { prop: "title", type: "text", id: 1 },
-  { prop: "cast", type: "text", id: 2 },
-  { prop: "director", type: "text", id: 3 },
-  { prop: "duration", type: "number", id: 4 },
-  { prop: "teaser", type: "textUrl", id: 5 },
-  { prop: "display", type: "select", id: 6 },
-  { prop: "poster", type: "textUrl", id: 7 },
-  { prop: "description", type: "textArea", id: 8 },
-  { prop: "language", type: "select", id: 9 },
-  { prop: "genre", type: "select", id: 10 },
-  { prop: "comingSoon", type: "radio", id: 11 },
-  { prop: "classification", type: "radio", id: 12 },
-];
-
-const genres = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "Film Noir",
-  "History",
-  "Horror",
-  "Music",
-  "Musical",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Short Film",
-  "Sport",
-  "Superhero",
-  "Thriller",
-  "War",
-  "Western",
-];
-
-const languages = [
-  "English",
-  "French",
-  "Spanish",
-  "Mandarin",
-  "Italian",
-  "Japanese",
-  "Korean",
-  "German",
-  "Russian",
-  "Hindi",
-  "Turkish",
-  "Portuguese",
-  "Arabic",
-  "Tamil",
-  "Dutch",
-  "Cantonese",
-  "Telugu",
-  "Polish",
-  "Czech",
-  "Punjabi",
-  "Hebrew",
-  "Malayalam",
-  "Swedish",
-  "Danish",
-  "Romanian",
-  "Norwegian",
-];
-
-const classification = ["G", "PG", "PG-13", "R", "NC-17"];
-
-const displays = ["2D", "3D", "4D"];
-
-function CreateMovie(
-  _requirements,
-  _genres,
-  _languages,
-  classification,
-  _displays
-) {
+function CreateMovie() {
   const dispatch = useDispatch();
 
-  // const [errors, setErrors] = useState({});
+  const genres = useSelector((state) => state.genres);
+  const languages = useSelector((state) => state.languages);
+  const displays = useSelector((state) => state.displays);
+
+  useEffect(() => {
+    dispatch(getGenres());
+    dispatch(getLanguages());
+    dispatch(getDisplays());
+    setIsLoading(false);
+  }, [dispatch]);
 
   const [input, setInput] = useState({
     title: "",
@@ -111,8 +43,17 @@ function CreateMovie(
     comingSoon: "",
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
   function handleChange(e) {
     e.preventDefault();
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleRadioChange(e) {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -165,13 +106,27 @@ function CreateMovie(
   }
 
   function handleSubmit(e) {
+    if (
+      !input.title ||
+      !input.cast ||
+      !input.director ||
+      !input.duration ||
+      !input.teaser ||
+      !input.poster ||
+      !input.description ||
+      !input.display ||
+      !input.genre ||
+      !input.language ||
+      !input.classification
+    ) {
+      return alert("Fill all information fields");
+    }
     input.cast = input.cast.split(",");
-
-    console.log(input);
+    setIsLoading(true);
 
     e.preventDefault();
-    dispatch(postMovie(input));
-    alert("Movie Created!");
+    dispatch(createMovie(input));
+    setIsLoading(false);
     setInput({
       title: "",
       genre: [],
@@ -190,382 +145,444 @@ function CreateMovie(
   }
 
   return (
-    <div>
-      <div className="create--movie--container">
-        <div className="create--movie">
-          <h1 className="create--movie--text">CreateMovie</h1>
-          <br />
-          <form
-            className="create--movie--form"
-            onSubmit={(e) => handleSubmit(e)}
-          >
-            {requirements.map((req) => {
-              value = req.prop;
-
-              typeOfForm = req.type;
-
-              let textForm = typeOfForm === "text";
-              let numberForm = typeOfForm === "number";
-              let textAreaForm = typeOfForm === "textArea";
-              let selectForm = typeOfForm === "select";
-              let urlForm = typeOfForm === "textUrl";
-              let radioForm = typeOfForm === "radio";
-              let checkForm = typeOfForm === "checkBox";
-
-              if (numberForm) {
-                return (
-                  <>
-                    <label
-                      htmlFor={req.prop}
-                      className="create--movie--form--titles"
-                      key={randomId}
-                    >
-                      {req.prop[0].toUpperCase() +
-                        req.prop.substring(1) +
-                        " : "}
-                    </label>
-                    <input
-                      key={req.prop}
-                      className="create--movie--form--input"
-                      type="text"
-                      value={input.value}
-                      name={req.prop}
-                      // required
-                      placeholder={`insert ${req.prop} here...`}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  </>
-                );
-              }
-
-              if (textForm) {
-                return (
-                  <>
-                    <label
-                      htmlFor={req.prop}
-                      className="create--movie--form--titles"
-                      key={randomId}
-                    >
-                      {req.prop[0].toUpperCase() +
-                        req.prop.substring(1) +
-                        " : "}
-                    </label>
-                    <input
-                      key={req.prop}
-                      className="create--movie--form--input"
-                      type="text"
-                      value={input.value}
-                      name={req.prop}
-                      // required
-                      placeholder={`insert ${req.prop} here...`}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  </>
-                );
-              }
-              if (urlForm) {
-                return (
-                  <>
-                    <label
-                      htmlFor={req.prop}
-                      className="create--movie--form--titles"
-                      key={randomId}
-                    >
-                      {req.prop[0].toUpperCase() +
-                        req.prop.substring(1) +
-                        " : "}
-                    </label>
-                    <input
-                      key={req.prop}
-                      className="create--movie--form--input"
-                      type="text"
-                      value={input.value}
-                      name={req.prop}
-                      // required
-                      placeholder={`insert ${req.prop} url here...`}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  </>
-                );
-              }
-              if (textAreaForm) {
-                return (
-                  <div>
-                    <label
-                      htmlFor={req.prop}
-                      className="create--movie--form--titles"
-                      key={randomId}
-                    >
-                      {req.prop[0].toUpperCase() +
-                        req.prop.substring(1) +
-                        " : "}
-                    </label>
-                    <textarea
-                      id={req.prop}
-                      name={req.prop}
-                      value={input.value}
-                      onChange={(e) => handleChange(e)}
-                      rows="5"
-                      cols="33"
-                      placeholder="Insert description here..."
-                    />
-                  </div>
-                );
-              }
-            })}
-            {/* Final of mapped form */}
-
-            {/* Displays Select */}
-
-            <>
-              <label htmlFor="display" className="create--movie--form--titles">
-                Display :
-              </label>
-              <select
-                className="input"
-                onChange={(e) => handleSelectDisplay(e)}
-              >
-                <option key={0} value="">
-                  Select
-                </option>
-                {displays
-                  .sort(function (a, b) {
-                    if (a < b) return -1;
-                    if (a > b) return 1;
-                    return 0;
-                  })
-                  .map((disp) => {
-                    return !input.display.includes(disp) ? (
-                      <option key={disp} value={disp}>
-                        {disp}
-                      </option>
-                    ) : null;
-                  })}
-              </select>
-              <div className="delete-container">
-                <ul>
-                  {input.display.map((el) => (
-                    <div>
-                      {el} {""}
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteDisplay(el)}
-                      >
-                        <div className="button">X</div>
-                      </button>
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            </>
-
-            {/* Genres Select */}
-
-            <>
-              <label htmlFor="genre" className="create--movie--form--titles">
-                Genres :
-              </label>
-              <select className="input" onChange={(e) => handleSelectGenres(e)}>
-                <option key={0} value="">
-                  Select
-                </option>
-                {genres
-                  .sort(function (a, b) {
-                    if (a < b) return -1;
-                    if (a > b) return 1;
-                    return 0;
-                  })
-                  .map((genre) => {
-                    return !input.genre.includes(genre) ? (
-                      <option key={genre} value={genre}>
-                        {genre}
-                      </option>
-                    ) : null;
-                  })}
-              </select>
-              <div className="delete-container">
-                <ul>
-                  {input.genre.map((el) => (
-                    <div>
-                      {el} {""}
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteGenre(el)}
-                      >
-                        <div className="button">X</div>
-                      </button>
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            </>
-
-            {/* Languages Select */}
-
-            <>
+    <div className="create-movie-main-container">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="create-movie-sub-container">
+          <div className="create-movie">
+            <h1>Create Movie</h1>
+            <form className="admin-form" onSubmit={(e) => handleSubmit(e)}>
+              {/* TITLE */}
               <>
                 <label
-                  htmlFor="languages"
-                  className="create--movie--form--titles"
+                  htmlFor="title"
+                  className="admin-form-titles"
+                  key={randomId}
                 >
-                  Language :
+                  Title :
+                </label>
+                <input
+                  key="title"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="title"
+                  required
+                  title="Insert the title of the movie"
+                  placeholder={`Insert movie title here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+              {/* CAST */}
+              <>
+                <label
+                  htmlFor="cast"
+                  className="admin-form-titles"
+                  key={randomId}
+                >
+                  Cast :
+                </label>
+                <input
+                  key="cast"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="cast"
+                  required
+                  title="Insert cast names separated by commas"
+                  placeholder={`Insert movie cast here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+
+              {/* DIRECTOR */}
+
+              <>
+                <label
+                  htmlFor="director"
+                  className="admin-form-titles"
+                  key={randomId}
+                >
+                  Director :
+                </label>
+                <input
+                  key="director"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="director"
+                  required
+                  title="Insert here the name of the director of the movie"
+                  placeholder={`Insert movie director here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+
+              {/* DURATION */}
+
+              <>
+                <label
+                  htmlFor="duration"
+                  className="admin-form-titles"
+                  key={randomId}
+                >
+                  Duration :
+                </label>
+                <input
+                  key="duration"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="duration"
+                  required
+                  title="Insert here the duration of the movie in minutes"
+                  placeholder={`Insert movie duration here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+
+              {/* TEASER */}
+
+              <>
+                <label
+                  htmlFor="teaser"
+                  className="admin-form-titles"
+                  key={randomId}
+                >
+                  Teaser :
+                </label>
+                <input
+                  key="teaser"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="teaser"
+                  required
+                  title="Insert here the link to the teaser of the movie"
+                  placeholder={`insert movie teaser url here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+
+              {/* POSTER */}
+
+              <>
+                <label
+                  htmlFor="poster"
+                  className="admin-form-titles"
+                  key={randomId}
+                >
+                  Poster :
+                </label>
+                <input
+                  key="poster"
+                  className="admin-input"
+                  type="text"
+                  value={input.value}
+                  name="poster"
+                  required
+                  title="Insert here the link to the poster of the movie"
+                  placeholder={`insert movie poster url here...`}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+
+              {/* DESCRIPTION */}
+
+              <label
+                htmlFor="description"
+                className="admin-form-titles"
+                key={randomId}
+              >
+                Description :
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                className="admin-textarea"
+                value={input.value}
+                onChange={(e) => handleChange(e)}
+                rows="5"
+                cols="33"
+                required
+                title="Insert here the description of the movie"
+                placeholder="Insert description here..."
+              />
+
+              {/* DISPLAYS SELECT */}
+
+              <>
+                <label htmlFor="display" className="admin-form-titles">
+                  Select one or more displays :
                 </label>
                 <select
-                  className="input"
-                  onChange={(e) => handleSelectLanguages(e)}
+                  className="admin-input"
+                  onChange={(e) => handleSelectDisplay(e)}
                 >
-                  <option key={0} value="">
+                  <option className="admin-input" key={0} value="">
                     Select
                   </option>
-                  {languages
-                    .sort(function (a, b) {
-                      if (a < b) return -1;
-                      if (a > b) return 1;
-                      return 0;
-                    })
-                    .map((lang) => {
-                      return !input.language.includes(lang) ? (
-                        <option key={lang} value={lang}>
-                          {lang}
-                        </option>
-                      ) : null;
-                    })}
+                  {displays !== undefined &&
+                    displays.length > 0 &&
+                    displays
+                      .sort(function (a, b) {
+                        if (a < b) return -1;
+                        if (a > b) return 1;
+                        return 0;
+                      })
+                      .map((dis) => {
+                        return !input.display.includes(dis) ? (
+                          <option className="admin-input" key={dis} value={dis}>
+                            {dis}
+                          </option>
+                        ) : null;
+                      })}
                 </select>
-                <div className="delete-container">
+                <div>
                   <ul>
-                    {input.language.map((el) => (
-                      <div>
-                        {el} {""}
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleDeleteLanguage(el)}
+                    {input.display.map((el) => (
+                      <div className="admin-select-selected" key={el}>
+                        <li
+                          onClick={() => handleDeleteDisplay(el)}
+                          className="admin-selected-options"
                         >
-                          <div className="button">X</div>
-                        </button>
+                          {el}
+                        </li>
                       </div>
                     ))}
                   </ul>
                 </div>
               </>
-            </>
-            {/* Coming Soon Radio */}
-            <>
-              <label
-                htmlFor="comingSoon"
-                className="create--movie--form--titles"
-              >
-                Coming Soon?
-              </label>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="true"
-                  name="comingSoon"
-                  defaultChecked="true"
-                  id="true"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="true">Yes</label>
-              </div>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="false"
-                  name="comingSoon"
-                  id="false"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="false">No</label>
-              </div>
-            </>
-            {/* Classification Radio */}
-            <>
-              <label
-                htmlFor="classification"
-                className="create--movie--form--titles"
-              >
-                Classification :
-              </label>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="G"
-                  name="classification"
-                  id="G"
-                  defaultChecked="true"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="G">
-                  G - General Audiences All ages admitted. Nothing that would
-                  offend parents for viewing by children.
-                </label>
-              </div>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="PG"
-                  name="classification"
-                  id="PG"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="PG">
-                  PG – Parental Guidance Suggested Some material may not be
-                  suitable for children.
-                </label>
-              </div>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="PG-13"
-                  name="classification"
-                  id="PG-13"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="PG13">
-                  PG-13 – Parents Strongly Cautioned Some material may be
-                  inappropriate for children under 13.
-                </label>
-              </div>
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="R"
-                  name="classification"
-                  id="R"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="R">
-                  R – Restricted Under 17 requires accompanying parent or adult
-                  guardian.
-                </label>
-              </div>
 
-              <div className="create--movie--radio">
-                <input
-                  type="radio"
-                  value="NC-17"
-                  name="classification"
-                  id="NC-17"
-                  onChange={(e) => handleChange(e)}
-                />
-                <label htmlFor="NC-17">
-                  NC-17 – Adults Only No One 17 and Under Admitted.
+              {/* GENRES SELECT */}
+
+              <>
+                <label htmlFor="genre" className="admin-form-titles">
+                  Select one or more genres :
                 </label>
+                <select
+                  className="admin-input"
+                  onChange={(e) => handleSelectGenres(e)}
+                >
+                  <option className="admin-input" key={0} value="">
+                    Select
+                  </option>
+
+                  {genres !== undefined &&
+                    genres.length > 0 &&
+                    genres
+                      .sort(function (a, b) {
+                        if (a < b) return -1;
+                        if (a > b) return 1;
+                        return 0;
+                      })
+                      .map((gen) => {
+                        return !input.genre.includes(gen) ? (
+                          <option className="admin-input" key={gen} value={gen}>
+                            {gen}
+                          </option>
+                        ) : null;
+                      })}
+                </select>
+
+                <div>
+                  <ul>
+                    {input.genre?.map((el) => (
+                      <div className="admin-select-selected" key={el}>
+                        <li
+                          onClick={() => handleDeleteGenre(el)}
+                          className="admin-selected-options"
+                        >
+                          {el}
+                        </li>
+                      </div>
+                    ))}
+                  </ul>
+                </div>
+              </>
+
+              {/* LANGUAGES SELECT */}
+
+              <>
+                <>
+                  <label htmlFor="languages" className="admin-form-titles">
+                    Select one or more languages :
+                  </label>
+                  <select
+                    className="admin-input"
+                    onChange={(e) => handleSelectLanguages(e)}
+                  >
+                    <option className="admin-input" key={0} value="">
+                      Select
+                    </option>
+
+                    {languages !== undefined &&
+                      languages.length > 0 &&
+                      languages
+                        .sort(function (a, b) {
+                          if (a < b) return -1;
+                          if (a > b) return 1;
+                          return 0;
+                        })
+                        .map((lang) => {
+                          return !input.language.includes(lang) ? (
+                            <option
+                              className="admin-input"
+                              key={lang}
+                              value={lang}
+                            >
+                              {lang}
+                            </option>
+                          ) : null;
+                        })}
+                  </select>
+                  <div>
+                    <ul>
+                      {input.language.map((el) => (
+                        <div className="admin-select-selected" key={el}>
+                          <li
+                            onClick={() => handleDeleteLanguage(el)}
+                            className="admin-selected-options"
+                          >
+                            {el}
+                          </li>
+                        </div>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              </>
+              {/* COMING SOON RADIO */}
+              <>
+                <label htmlFor="comingSoon" className="admin-form-titles">
+                  Is a premiere?
+                </label>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="true"
+                    name="comingSoon"
+                    id="true"
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="true" className="admin-radio-text">
+                    Yes
+                  </label>
+                </div>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="false"
+                    name="comingSoon"
+                    id="false"
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="false" className="admin-radio-text">
+                    No
+                  </label>
+                </div>
+              </>
+              {/* CLASSIFICATION RADIO */}
+              <>
+                <label htmlFor="classification" className="admin-form-titles">
+                  Classification :
+                </label>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="G"
+                    name="classification"
+                    id="G"
+                    title="All ages admitted. Nothing that would
+                    offend parents for viewing by children."
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="G" className="admin-radio-text">
+                    G - General Audiences
+                  </label>
+                </div>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="PG"
+                    name="classification"
+                    id="PG"
+                    title="Some material may not be
+                    suitable for children."
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="PG" className="admin-radio-text">
+                    PG – Parental Guidance Suggested
+                  </label>
+                </div>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="PG-13"
+                    name="classification"
+                    id="PG-13"
+                    title="Some material may be
+                    inappropriate for children under 13"
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="PG13" className="admin-radio-text">
+                    PG-13 – Parents Strongly Cautioned
+                  </label>
+                </div>
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="R"
+                    name="classification"
+                    id="R"
+                    title="Under 17 requires accompanying parent or
+                    adult guardian"
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="R" className="admin-radio-text">
+                    R – Restricted
+                  </label>
+                </div>
+
+                <div className="create-movie-radio-container">
+                  <input
+                    type="radio"
+                    value="NC-17"
+                    name="classification"
+                    id="NC-17"
+                    title="No One 17 and Under Admitted"
+                    className="admin-radio"
+                    onChange={(e) => handleRadioChange(e)}
+                  />
+                  <label htmlFor="NC-17" className="admin-radio-text">
+                    NC-17 – Adults Only
+                  </label>
+                </div>
+              </>
+              <div className="admin-buttons-container">
+                <div className="another-container">
+                  <button className="admin-buttons" type="submit">
+                    Create Movie
+                  </button>
+                  <button className="admin-buttons" type="reset">
+                    Clear Fields
+                  </button>
+                </div>
               </div>
-            </>
-            <br />
-            <button className="admin--button" type="submit">
-              Create Movie
-            </button>
-            <button className="admin--button" type="reset">
-              Clear Fields
-            </button>
-            <Link to="/adminmenu" className="create--movie--button">
-              <div className="admin--button">Go Back</div>
-            </Link>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
+      <Link to="/adminmenu">
+        <button className="admin-buttons">Go Back</button>
+      </Link>
     </div>
   );
 }

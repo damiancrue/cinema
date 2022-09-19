@@ -1,10 +1,13 @@
-import img1 from "./BannerImg/allegiant.jpg";
-import img2 from "./BannerImg/batmanvsuperman.jpg";
-import img3 from "./BannerImg/keeping.jpg";
-import img4 from "./BannerImg/the5thwave.jpg";
-import img5 from "./BannerImg/therevenant.jpg";
-import img6 from "./BannerImg/warcraft.jpg";
-import img7 from "./BannerImg/xmenapocalipse.jpg";
+import img1 from "./BannerImg/banner-black-phone.jpg";
+import img2 from "./BannerImg/banner-crimes-of-the-future.jpg";
+import img3 from "./BannerImg/banner-dragon-ball.jpg";
+import img4 from "./BannerImg/banner-elvis.jpg";
+import img5 from "./BannerImg/banner-nope.jpg";
+import img6 from "./BannerImg/banner-after-ever-happy.jpg";
+import img7 from "./BannerImg/banner-cronica-francesa.jpg";
+
+
+
 
 const carrouselImg = [
   {

@@ -1,53 +1,46 @@
+.edit-movie-main-container{
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Oswald", "Roboto";
+  color: white;
+  user-select: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+}
 
-.admin--button {
-  display:flex;
+.admin-cards-container{
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-
-  width: 7rem;
-  height: 0.5rem;
-  background: none;
-  border: 3px solid #fff;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 1.6em;
-  font-weight: bold;
-  margin: 0.5rem auto;
-  padding: 1.5rem 10rem;
-  position: relative;
-  
+  margin: 1rem;
 }
 
-.admin--button::before,
-.admin--button::after {
-  background: #fff;
-  content: '';
-  position: absolute;
-  z-index: -1;
+.admin-movie-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
-.admin--button::after {
-  -webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-	transition: all 0.3s;
-  height: 0;
-  left: 0;
-  top: 0;
-  width: 100%;
-  
+.admin-movie-card:hover{
+  background-color: black;
+  border-color: #9ecaed;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem #9ecaed;
+  transform: scale(1.1, 1.1);
+  transition: .3s;
+  animation: backAni 4s infinite alternate;
 }
 
-.admin--button:hover {
-  color: var(--violet-black);
-
-}
-
-.admin--button:hover:after {
-  height: 100%;
+.admin-movie-img{
+  border-radius: 1rem;
+  margin: 1rem;
+  width: 200px;
 }
