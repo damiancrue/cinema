@@ -209,10 +209,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-//! Clic para agregar a favoritos
+//! Clic para agregar a favoritos--------------
 
 //!------------------
 
 //!---------------------------
+
+//!--------------------------------------------
 
 //!Favoritos
