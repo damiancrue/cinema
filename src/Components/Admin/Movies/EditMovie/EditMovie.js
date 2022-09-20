@@ -152,7 +152,6 @@ function EditMovie() {
 
   function handleSubmit(e, _index) {
     e.preventDefault();
-    console.log(input.classification);
     dispatch(editMovie(movieSearch[index].movie_id, input));
     handleReset();
   }

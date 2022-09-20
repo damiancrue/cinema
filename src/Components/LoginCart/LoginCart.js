@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
 
-import "../Login/Login.css";
+import "../LoginCart/LoginCart.css";
 
-export default function Login() {
+export default function LoginCart({state}) {
   const [user, setUser] = useState({
     name: "",
     Lastname: "",
@@ -39,7 +39,7 @@ export default function Login() {
           token: credentials,
         }
       );
-      isAdmin.data ? navigate("/adminMenu") : navigate("/");
+      navigate("/cart");
 
       //navigate("/adminmenu");
     } catch (error) {
@@ -54,10 +54,10 @@ export default function Login() {
   };
   const handleGoogleSignIn = async () => {
     await loginGoogle();
-    navigate("/");
+    navigate("/cart");
   };
   return (
-    <div className="login--container">
+    <div className={state+" login--container"}>
       <h1 className="login--title">LOGIN</h1>
       <form className="login--form" onSubmit={(e) => handleSubmit(e)}>
         <div className="login--container--email">

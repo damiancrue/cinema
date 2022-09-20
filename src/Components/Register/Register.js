@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
-import {newUser} from "../../Redux/Actions";
+import { newUser } from "../../Redux/Actions";
 import { useDispatch } from "react-redux";
 
 import "../Register/Register.css";
@@ -18,7 +18,7 @@ export default function Register() {
 
   const navigate = useNavigate();
   const { signUp } = useAuth();
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
 
   const handleHome = () => {
     navigate("/");
@@ -35,7 +35,7 @@ export default function Register() {
     setError("");
     try {
       await signUp(user.email, user.password, user.name);
-      dispatch(newUser({name:user.name,email: user.email }))
+      dispatch(newUser({ name: user.name, email: user.email }));
       //ToDo: Validar credencials y admin en esta instancia
       navigate("/");
     } catch (error) {
@@ -49,10 +49,7 @@ export default function Register() {
       if (error.code === "auth/email-already-in-use") {
         setError("Usuario ya registrado");
       }
-      // setError(error.message)
     }
-
-    // console.log(user)
   };
   return (
     <div className="login--container">

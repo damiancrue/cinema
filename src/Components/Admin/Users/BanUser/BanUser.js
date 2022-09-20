@@ -21,7 +21,6 @@ function BanUser() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target.value);
     dispatch(banUser(input));
     setInput({
       email: "",

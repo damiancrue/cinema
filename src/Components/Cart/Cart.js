@@ -1,124 +1,196 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMovies, getProducts } from "../../Redux/Actions";
+import { getProducts } from "../../Redux/Actions";
 import { v4 as randomId } from "uuid";
 import { useAuth } from "../Context/authContext";
+import axios from "axios";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
+import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import Nothing from "../Loading/Nothing";
 import Loading from "../Loading/Loading";
+import LoginCart from "../LoginCart/LoginCart";
 
 import "./Cart.css";
+import { Login, PhotoSizeSelectLargeOutlined } from "@mui/icons-material";
 
 function Cart() {
   const dispatch = useDispatch();
 
   const [movieLocalStorage, setMovieLocalStorage] = useState({});
-  const [amount, setAmount] = useState(0)
+  const [amount, setAmount] = useState(0);
+  const [toggle, setToggle] = useState(false);
   const [localStorage, setLocalStorage] = useState({});
-  const { authUser } = useAuth()
-  const allMovies = useSelector((state) => state.allMovies);
-  const products = useSelector((state) => state.products);
+  const [loginS, setLoginS] = useState("hide");
 
-  const [productAddedId, setProductAddedId] = useState({
-    product_id: [{ name: "" }, { quantity: 0 }],
-  });
+  const { authUser } = useAuth();
+  const products = useSelector((state) => state.products);
 
   useEffect(() => {
     const local = window.localStorage.getItem("movieCart");
     setMovieLocalStorage(JSON.parse(local));
-    dispatch(getAllMovies());
     dispatch(getProducts());
     const local2 = window.localStorage.getItem("productsCart");
-    const local3 = window.localStorage.getItem("amount")
-    setLocalStorage(local2?JSON.parse(local2):{})
-    setAmount(JSON.parse(local3))
+    const local3 = window.localStorage.getItem("amount");
+    setLocalStorage(local2 ? JSON.parse(local2) : {});
+    setAmount(JSON.parse(local3));
   }, [dispatch]);
 
   function handleReset() {
     window.localStorage.setItem("productsCart", JSON.stringify({}));
     setLocalStorage({});
-    setAmount(0)
-    window.localStorage.setItem("amount",JSON.stringify(0))
+    setAmount(0);
+    window.localStorage.setItem("amount", JSON.stringify(0));
   }
-
-  function handlePay() {
-
+ 
+  function reqLogin(){
+    setLoginS("show")
   }
 
   function handleAddToCart(id, name, price) {
-    if (localStorage) {
-      if (localStorage[id]) {
-        localStorage[id][1].quantity += 1;
-        setLocalStorage({ ...localStorage });
-        setAmount(amount+localStorage[id][2].price)
-        window.localStorage.setItem("amount",JSON.stringify(amount))
-        window.localStorage.setItem(
-          "productsCart",
-         JSON.stringify(localStorage)
-        );
+    if (!toggle) {
+      if (localStorage) {
+        if (localStorage[id]) {
+          localStorage[id][1].quantity += 1;
+          setLocalStorage({ ...localStorage });
+          setAmount(amount + localStorage[id][2].price);
+          window.localStorage.setItem("amount", JSON.stringify(amount));
+          window.localStorage.setItem(
+            "productsCart",
+            JSON.stringify(localStorage)
+          );
+        } else {
+          localStorage[id] = [
+            { name: name },
+            { quantity: 1 },
+            { price: price },
+            { id: id },
+          ];
+          setLocalStorage({ ...localStorage });
+          setAmount(amount + localStorage[id][2].price);
+          window.localStorage.setItem("amount", JSON.stringify(amount));
+          window.localStorage.setItem(
+            "productsCart",
+            JSON.stringify(localStorage)
+          );
+        }
       } else {
-        localStorage[id] = [{ name: name }, { quantity: 1 }, {price: price}];
+        localStorage[id] = [
+          { name: name },
+          { quantity: 1 },
+          { price: price },
+          { id: id },
+        ];
         setLocalStorage({ ...localStorage });
-        setAmount(amount+localStorage[id][2].price)
-        window.localStorage.setItem("amount",JSON.stringify(amount))
+        setAmount(localStorage[id][2].price);
+        window.localStorage.setItem("amount", JSON.stringify(amount));
         window.localStorage.setItem(
           "productsCart",
           JSON.stringify(localStorage)
         );
       }
-    } else {
-      localStorage[id] = [{ name: name }, { quantity: 1 }];
-      setLocalStorage({ ...localStorage });
-      setAmount(localStorage[id][2].price);
-      window.localStorage.setItem("amount",JSON.stringify(amount))
-      window.localStorage.setItem("productsCart", JSON.stringify(localStorage));
     }
-  }
+    }
+
 
   function handleRemoveFromCart(id) {
-    if (localStorage[id][1].quantity > 1) {
-      localStorage[id][1].quantity -= 1;
-      setLocalStorage({ ...localStorage });
-      setAmount(amount-localStorage[id][2].price)
-      window.localStorage.setItem("amount",JSON.stringify(amount))
-      window.localStorage.setItem("productsCart", JSON.stringify(localStorage));
-    } else {
-      setAmount(amount-localStorage[id][2].price)
-      window.localStorage.setItem("amount",JSON.stringify(amount))
-      delete localStorage[id];
-      setLocalStorage({ ...localStorage });
-      window.localStorage.setItem("productsCart", JSON.stringify(localStorage));
+    if (!toggle) {
+      if (localStorage[id][1].quantity > 1) {
+        localStorage[id][1].quantity -= 1;
+        setLocalStorage({ ...localStorage });
+        setAmount(amount - localStorage[id][2].price);
+        window.localStorage.setItem("amount", JSON.stringify(amount));
+        window.localStorage.setItem(
+          "productsCart",
+          JSON.stringify(localStorage)
+        );
+      } else {
+        setAmount(amount - localStorage[id][2].price);
+        window.localStorage.setItem("amount", JSON.stringify(amount));
+        delete localStorage[id];
+        setLocalStorage({ ...localStorage });
+        window.localStorage.setItem(
+          "productsCart",
+          JSON.stringify(localStorage)
+        );
+      }
     }
+  }
+  function translate() {
+    var local2 = [];
+    Object.keys(localStorage).forEach((key) => {
+      let idTemp = localStorage[key][3]?.id;
+      let nameTemp = localStorage[key][0]?.name;
+      let quantityTemp = localStorage[key][1]?.quantity;
+      let priceTemp = localStorage[key][2]?.price;
+      local2.push({
+        name: nameTemp,
+        quantity: quantityTemp,
+        price: priceTemp,
+        id: idTemp,
+      });
+    });
+    return local2;
+  }
+
+  const sendPayment = {
+    userToken: authUser?.accessToken,
+    scheduleId: movieLocalStorage,
+    productsBuy: translate(),
+  };
+
+  async function startPaymentProcess() {
+    setToggle(true);
+    const paymentBasic = await axios.post(
+      "https://api-pf-cine.herokuapp.com/payment",
+      sendPayment
+    );
+    const script = document.createElement("script");
+    const attr_data_preference = document.createAttribute("data-preference-id");
+    attr_data_preference.value = paymentBasic.data.id;
+    script.src =
+      "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+    script.setAttributeNode(attr_data_preference);
+    document.getElementById("pay").appendChild(script);
   }
 
   return (
+    !localStorage?
+    <div> <Nothing/> </div>
+    :
     <div className="cart-main-container">
-      <h1>Hi, I'm your Cart</h1>
       <div className="cart-sub-container">
+        <h2 className="cart-title">Details of your order:</h2>
+        <hr className="cart-hr" />
         {movieLocalStorage ? (
           <div key={randomId()} className="items-movies-in-cart-container">
-            <h2>Items in your cart:</h2>
-
-            <hr />
             <div key={randomId()} className="movie-in-cart-container">
               <div key={randomId()} className="movie-in-cart-card">
-                <h3>Movie :{movieLocalStorage.movie}</h3>
-                <h3>Schedule ID: {movieLocalStorage.schedule_id}</h3>
-                <h3>Day :{movieLocalStorage.day}</h3>
-                <h3>Time :{movieLocalStorage.time}</h3>
-                <h3>Quantity of Seats :{movieLocalStorage.selected?.length}</h3>
+                <h3>Movie :  {movieLocalStorage.movie}</h3>
+                <h3>Day :  {movieLocalStorage.day?movieLocalStorage.day.split("-")[2]+"-"+movieLocalStorage.day.split("-")[1]:""}</h3>
+                <h3>Time :  {movieLocalStorage.time?movieLocalStorage.time.split(":")[0] + ":" + movieLocalStorage.time.split(":")[1]:""}</h3>
+                <h3>Quantity of Seats :  {movieLocalStorage.selected?.length}</h3>
                 <h3>
-                  Seats Selected :{movieLocalStorage.selected?.join(", ")}
+                  Seats Selected : {movieLocalStorage.selected?.join(", ")}
                 </h3>
               </div>
             </div>
-            <hr />
-            <h3>Total Price For The Seats:  ${movieLocalStorage.selected?(movieLocalStorage.selected.length*5).toFixed(2):"0.00"}</h3>
-            <hr />
+            <hr className="cart-hr" />
+            <div key={randomId()} className="cart-text-prices-container">
+              <h3 className="cart-text-prices">
+                Movie tickets total price: $
+                {movieLocalStorage.selected
+                  ? (movieLocalStorage.selected.length * 5).toFixed(2)
+                  : "0.00"}
+              </h3>
+            </div>
             <div key={randomId()} className="cart-products-in-cart-container">
               <div
                 key={randomId()}
                 className="cart-products-in-cart-sub-container"
               >
+                <hr className="cart-hr" />
                 {Object.keys(localStorage).map((product) => {
                   return (
                     <div className="cart-products-in-cart" key={randomId()}>
@@ -132,78 +204,131 @@ function Cart() {
                         key={randomId()}
                         className="cart-quantity-buttons-container"
                       >
+                        {!toggle?
                         <button
                           className="cart-quantity-buttons"
                           onClick={() => handleRemoveFromCart(product)}
                         >
-                          -
-                        </button>
-
-                        {localStorage[product][1].quantity}
-
+                         -
+                        </button>:""
+                        }
+                        <div key={randomId()} className="product-quantity">
+                          {localStorage[product][1].quantity}
+                        </div>
+                        {!toggle?
                         <button
                           className="cart-quantity-buttons"
                           onClick={() => handleAddToCart(product, product)}
                         >
                           +
-                        </button>
+                          </button>:""
+                        }
+                      </div>
+                      <div key={randomId()} className="cart-product-price">
+                        {"$" +
+                          (localStorage[product][1].quantity *
+                            localStorage[product][2].price).toFixed(2)}
                       </div>
                     </div>
                   );
                 })}
-                <hr />
-                <h3>Total Price For The Mighty Morphy: $ {amount?amount.toFixed(2):"0:00"}</h3>
-                <hr />
               </div>
             </div>
-            <button className="admin-buttons" onClick={() => handleReset()}>
-              Reset Items
-            </button>
-            <button className="admin-buttons">
-              Amount ${(parseFloat(amount?amount.toFixed(2):0)+parseFloat(movieLocalStorage.selected?(movieLocalStorage.selected.length*5).toFixed(2):0)).toFixed(2)}
-            </button>
-            {authUser?.uid ?
-            <button className="admin-buttons">
-              To Pay 
-            </button>
-
-              : 
-              <button className="admin-buttons">
-          Login to continue
-            </button>
-            }
-
-
-            {products ? (
-              <div key={randomId()} className="admin-products-container">
-                {products?.map((product, index) => (
-                  <div key={randomId()} className="admin-product">
-                    <h2>{product.name}</h2>
-                    <img
-                      className="admin-product-image"
-                      key={randomId()}
-                      src={product.image}
-                      alt="product"
-                      onClick={() =>
-                        handleAddToCart(product.product_id, product.name, product.price)
-                      }
-                    />
-                    <div key={randomId()} className="product-info">
-                      <p>Price : ${product.price}</p>
-                    </div>
-                    <h3>Add to cart</h3>
-                  </div>
-                ))}
+            <hr className="cart-hr" />
+            {amount ? (
+              <div key={randomId()} className="cart-text-prices-container">
+                <h3 className="cart-text-prices">
+                  Food & Drinks total price: ${" "}
+                  {amount ? amount.toFixed(2) : "0:00"}
+                </h3>
               </div>
-            ) : (
-              <Loading />
-            )}
-            <hr />
+            ) : null}
+            <hr className="cart-hr" />
+            <div key={randomId()} className="cart-text-prices-container">
+              <h3 className="cart-text-prices">
+                Total: $
+                {(
+                  parseFloat(amount ? amount.toFixed(2) : 0) +
+                  parseFloat(
+                    movieLocalStorage.selected
+                      ? (movieLocalStorage.selected.length * 5).toFixed(2)
+                      : 0
+                  )
+                ).toFixed(2)}
+              </h3>
+            </div>
+            <hr className="cart-hr" />
+            <div className="cart-buttons-container">
+              <button className="cart-buttons" onClick={() => handleReset()}>
+                EMPTY CART <ReplayOutlinedIcon />
+              </button>
+              {/* <button className="cart-buttons" onClick={() => translate()}>
+                I'M A BUTTON
+              </button> */}
+              {authUser?.uid ? (
+                <div id="pay">
+                  {!toggle ? (
+                    <button
+                      className="cart-buttons"
+                      onClick={startPaymentProcess}
+                    >
+                      CONTINUE <ArrowCircleRightOutlinedIcon />
+                    </button>
+                  ) : (
+                    <button
+                      className="cart-buttons"
+                      onClick={() => setToggle(false)}
+                    >
+                      EDIT
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <button className="cart-buttons" onClick={()=>reqLogin()}>LOGIN </button>
+              )}
+            </div>
+            <hr className="cart-hr" />
+            <div className="cart-products-main-container">
+              {products ? (
+                <div key={randomId()} className="cart-products-container">
+                  {products?.map((product, index) => (
+                    <div key={randomId()} className="cart-product-card">
+                      <h2>{product.name}</h2>
+                      <img
+                        className="cart-product-image"
+                        key={randomId()}
+                        src={product.image}
+                        alt="product"
+                        onClick={() =>
+                          handleAddToCart(
+                            product.product_id,
+                            product.name,
+                            product.price
+                          )
+                        }
+                      />
+                      <div key={randomId()} className="admin-product-info">
+                        <p>Price : ${product.price}</p>
+                      </div>
+                      <h3>
+                        Add to cart <AddShoppingCartIcon />
+                      </h3>
+                    </div>
+                  ))}
+                  <hr className="cart-hr" />
+                </div>
+              ) : (
+                <Loading />
+              )}
+            </div>
           </div>
         ) : (
           <Loading />
         )}
+        <hr className="cart-hr" />
+        <br />
       </div>
+      {authUser?.uid ?"":loginS==="show"?<LoginCart state="login-cart-active"/>:""}
     </div>
   );
 }

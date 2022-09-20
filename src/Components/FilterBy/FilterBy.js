@@ -1,18 +1,19 @@
 import "./FilterBy.css";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { getGenres } from "./../../Redux/Actions";
+import { getGenres, getDisplays } from "./../../Redux/Actions";
 
 import { useDispatch, useSelector } from "react-redux";
 
 export default function FilterBy({ filters, setFilters }) {
-
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
+  const displays = useSelector((state) => state.displays);
 
   useEffect(() => {
     dispatch(getGenres());
+    dispatch(getDisplays());
   }, [dispatch]);
 
   let handleChange = (e) => {
@@ -31,14 +32,15 @@ export default function FilterBy({ filters, setFilters }) {
           className="filters--select"
           value={filters.genre}
         >
-          <option value='default' className="filters--option">
+          <option value="default" className="filters--option">
             Genre
           </option>
-          {genres !== undefined && genres.map((g, index) => (
-            <option key={index} value={g} className="filters--option">
-              {g}
-            </option>
-          ))}
+          {genres !== undefined &&
+            genres.map((g, index) => (
+              <option key={index} value={g} className="filters--option">
+                {g}
+              </option>
+            ))}
         </select>
         <select
           onChange={(e) => handleChange(e)}
@@ -46,11 +48,32 @@ export default function FilterBy({ filters, setFilters }) {
           className="filters--select"
           value={filters.comingSoon}
         >
-          <option value='default' className="filters--option">
-            Coming soon
+          <option value="default" className="filters--option">
+            Coming soon?
           </option>
-          <option value={true} className="filters--option">True</option>
-          <option value={false} className="filters--option">False</option>
+          <option value={true} className="filters--option">
+            Yes
+          </option>
+          <option value={false} className="filters--option">
+            No
+          </option>
+        </select>
+
+        <select
+          onChange={(e) => handleChange(e)}
+          name="display"
+          className="filters--select"
+          value={filters.display}
+        >
+          <option value="default" className="filters--option">
+            Display
+          </option>
+          {displays !== undefined &&
+            displays.map((d, index) => (
+              <option key={index} value={d} className="filters--option">
+                {d}
+              </option>
+            ))}
         </select>
       </div>
     </>

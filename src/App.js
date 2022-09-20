@@ -12,7 +12,6 @@ import ScheduleByMovie from "./Components/Schedule/ScheduleByMovie";
 import Room from "./Components/Room/Room";
 import Cart from "./Components/Cart/Cart";
 
-
 import BanUser from "./Components/Admin/Users/BanUser/BanUser.js";
 import ActivateUser from "./Components/Admin/Users/ActivateUser/ActivateUser";
 import CreateUser from "./Components/Admin/Users/CreateUser/CreateUser.js";
@@ -36,6 +35,10 @@ import CreateRoom from "./Components/Admin/Rooms/CreateRoom/CreateRoom";
 import EditRoom from "./Components/Admin/Rooms/EditRoom/EditRoom";
 import DeleteRoom from "./Components/Admin/Rooms/DeleteRoom/DeleteRoom";
 
+import Success from "./Components/BuyProcess/Succes/Success";
+import Pending from "./Components/BuyProcess/Pending/Pending";
+import Fail from "./Components/BuyProcess/Fail/Fail";
+
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.js";
 import Error from "./Components/Error/Error";
 import Header from "./Components/Header/Header";
@@ -43,17 +46,14 @@ import Footer from "./Components/Footer/Footer";
 import { Terms } from "./Components/FooterComponents/Terms";
 import { AboutUs } from "./Components/FooterComponents/AboutUs";
 import { ContactUs } from "./Components/FooterComponents/ContactUs";
-import { Help } from "./Components/FooterComponents/Help";
 import { Promotions } from "./Components/FooterComponents/Promotions";
 import { Building } from "./Components/Building/Building";
 import Products from "./Components/Products/Products";
-
+import { MyProfile } from "./Components/MyProfile/MyProfile";
+import { MyFavMovies } from "./Components/MyProfile/MyFavMovies";
+import { MyPurchases } from "./Components/MyProfile/MyPurchases";
 
 function App() {
-  //   React.useEffect(() => {
-  //   console.log('render home')
-  // },[])
-
   return (
     <div className="App">
       <AuthProvider>
@@ -89,11 +89,14 @@ function App() {
             <Route exact path="/terms" element={<Terms />} />
 
             <Route exact path="/promo" element={<Promotions />} />
-            {/* <Route exact path="/help" element={<Help />} /> */}
             <Route exact path="/contact" element={<ContactUs />} />
             <Route exact path="/about" element={<AboutUs />} />
             <Route exact path="/building" element={<Building />} />
             <Route exact path="/products" element={<Products />} />
+            <Route exact path="/myprofile" element={<MyProfile />} />
+            <Route exact path="/myfavorites" element={<MyFavMovies />} />
+            <Route exact path="/mycart" element={<Cart />} />
+            <Route exact path="/mypurchases" element={<MyPurchases />} />
 
             {/* Admin User Paths */}
             <Route
@@ -278,9 +281,15 @@ function App() {
               }
             />
 
+            <Route exact path="/payment/success" element={<Success />} />
+
+            <Route exact path="/payment/fail" element={<Fail />} />
+
+            <Route exact path="/payment/pending" element={<Pending />} />
+
             {/* Error Route */}
 
-            <Route exact path="/error" element={<Error />} />
+            <Route path="*" element={<Error />} />
           </Routes>
 
           <Footer />

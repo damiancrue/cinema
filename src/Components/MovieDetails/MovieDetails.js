@@ -12,6 +12,8 @@ import { useAuth } from "../Context/authContext";
 
 import { getMovieDetail, delMovieDetail, getMovieReviews, createReview, setFav } from "./../../Redux/Actions/index";
 
+import Loading from "./../Loading/Loading";
+
 // ICONS
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -21,7 +23,6 @@ import StarIcon from '@mui/icons-material/Star';
 function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetail, getMovieReviews, createReview }) {
   const { authUser } = useAuth()
   const { id } = useParams();
-  //console.log(authUser.uid)
   const dispatch = useDispatch()
 
   // ESTADO PARA CHECKEAR SI LLENO LOS CAMPOS DE LA REVIEW
@@ -30,23 +31,22 @@ function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetai
   const [addReviewActive, setAddReviewActive] = useState(false);
   // ESTADO PARA ACTUALIZAR EL PROMEDIO TOTAL DE LAS REVIEWS
   const [reviewsAverage, setReviewsAverage] = useState(0);
+  // ESTADO PARA RE RENDERIZAR CUANDO SE SUBA UNA REVIEW NUEVA
+  const [reviewChange, setReviewChange] = useState(false);
 
   const totalReviews = movieReviews.reduce((acc, movieReviews) => {
     return acc + movieReviews.rate;
   }, 0);
 
   useEffect(() => {
+    getMovieReviews(id);
     getMovieDetail(id);
     setReviewsAverage(totalReviews / movieReviews.length);
+    setReviewChange(false);
     return () => {
       delMovieDetail();
     }
-  }, [delMovieDetail, id, getMovieDetail, totalReviews, movieReviews.length])
-
-  // CADA VEZ QUE SE AGREGUE UNA REVIEW SE VA A RENDERIZAR EL COMPONENTE CON EL PROMEDIO TOTAL ACTUALIZADO Y LA NUEVA REVIEW
-  useEffect(() => {
-    getMovieReviews(id);
-  }, [id])
+  }, [delMovieDetail, id, getMovieDetail, movieReviews.length, getMovieReviews, totalReviews, reviewChange])
 
   // FUNCION PARA POSTEAR UNA NUEVA REVIEW
   function handleSubmit(e) {
@@ -54,18 +54,21 @@ function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetai
     if (e.target.rating.value === 'default' || e.target.review.value === '') {
       setAddReviewActive(!addReviewActive);
       setCheckReview(false);
-      return;
+    }else{
+      const review = {
+        ...reviewChange,
+        movie_id: id,
+        email: authUser.email,
+        rate: parseInt(e.target.rating.value),
+        review: e.target.review.value
+      }
+      createReview(review);
+      setAddReviewActive(!addReviewActive);
+      setCheckReview(true);
+      setReviewChange(true);
     }
-    const review = {
-      movie_id: id,
-      email: authUser.email,
-      rate: parseInt(e.target.rating.value),
-      review: e.target.review.value
-    }
-    createReview(review);
-    setAddReviewActive(!addReviewActive);
-    setCheckReview(true);
   }
+
   //! Clic para agregar a favoritos--------------
   const movie_id = Number(id)
   const [val, setVal] = useState(true)
@@ -93,14 +96,14 @@ function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetai
                 {movieDetail.title.toUpperCase()}
               </h2>
               {movieDetail.comingSoon && <p className="movie--detail--comingsoon">COMING SOON</p>}
-            </div>
-            {/* Botón para favoritos */}
-            {authUser?.uid ?
-              <button onClick={handleClick} style={!val ? { "color": "yellow" } : null}>
-                <FavoriteSharpIcon ></FavoriteSharpIcon>
-              </button>
+              {/* Botón para favoritos */}
+              {authUser?.uid ?
+                <button className="movie--detail--favbutton" onClick={handleClick} style={!val ? { "color": "rgb(180, 46, 46)" } : null}>
+                  <FavoriteSharpIcon ></FavoriteSharpIcon>
+                </button>
               : ""
-            }
+              }
+            </div>
             <div className="movie--detail--button--container">
               <Link className="movie--detail--button" to={`/movie/buy/${movieDetail.movie_id}`}>
                 BUY TICKET
@@ -178,7 +181,7 @@ function MovieDetails({ movieDetail, movieReviews, getMovieDetail, delMovieDetai
           </div>
         </div>
       ) : (
-        <h2>No detail available.</h2>
+        <Loading />
       )}
     </>
   );

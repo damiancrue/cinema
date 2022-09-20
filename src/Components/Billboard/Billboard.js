@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { getMovies } from "./../../Redux/Actions/index";
 import { connect } from "react-redux";
 import Loading from "../Loading/Loading";
-import Nothing from "../Loading/Nothing";
 
 function Billboard({ getMovies, movies, moviesFiltered }) {
   const observer = new IntersectionObserver((entries) => {
@@ -44,7 +43,6 @@ function Billboard({ getMovies, movies, moviesFiltered }) {
   useEffect(() => {
     getMovies();
   }, [getMovies]);
-  console.log(movies);
 
   return (
     <div className="billboard">

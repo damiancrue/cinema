@@ -8,7 +8,7 @@ const initialState = {
   scheduleByMovie: [],
   movieReviews: [],
   //!------------------
-  favMovies: []
+  favMovies: [],
   //!------------------
 };
 
@@ -55,7 +55,10 @@ export default function rootReducer(state = initialState, action) {
             });
           } else {
             moviesByFilter = moviesByFilter.filter((m) => {
-              return m[key].toString().toLowerCase().includes(action.payload[key].toLowerCase());
+              return m[key]
+                .toString()
+                .toLowerCase()
+                .includes(action.payload[key].toLowerCase());
             });
           }
         }
@@ -126,11 +129,10 @@ export default function rootReducer(state = initialState, action) {
         seats: action.payload,
       };
     case "COMING_SOON":
-      let soon = [...state.movies.filter(m => m.comingSoon === true)];
-      console.log(soon)
+      let soon = [...state.movies.filter((m) => m.comingSoon === true)];
       return {
         ...state,
-        comingSoon: soon
+        comingSoon: soon,
       };
     case "GET_SCHEDULES":
       return {
@@ -143,54 +145,55 @@ export default function rootReducer(state = initialState, action) {
         if (a.time < b.time) return -1;
         if (a.time > b.time) return 1;
         return 0;
-      })
+      });
       let ordday = ordtime.sort((a, b) => {
         if (a.day < b.day) return -1;
         if (a.day > b.day) return 1;
         return 0;
-      })
+      });
+      let scheduled2 = ordday.filter(m=>m.active===true)
       return {
         ...state,
-        schedule: ordday
+        schedule: scheduled2,
       };
 
-
     case "GET_SCHEDULE_BY_ID":
+      let schedule = action.payload.active?action.payload:[]
       return {
         ...state,
-        scheduleById: action.payload
+        scheduleById: schedule,
       };
 
     case "GET_SCHEDULE_BY_MOVIE":
+      let scheduled = action.payload.filter(m=>m.active===true)
       return {
         ...state,
-        scheduleByMovie: action.payload
+        scheduleByMovie: scheduled,
       };
 
-
-      case 'RESET_SCHEDULE_BY_MOVIE':
-        return{
-          ...state,
-          scheduleByMovie: []
-        }
-
-      case 'DEL_SCHEDULE':
-        return{
-          ...state,
-          scheduleById: []
-        }
-
-    case 'GET_REVIEWS':
+    case "RESET_SCHEDULE_BY_MOVIE":
       return {
         ...state,
-        movieReviews: action.payload
-      }
+        scheduleByMovie: [],
+      };
+
+    case "DEL_SCHEDULE":
+      return {
+        ...state,
+        scheduleById: [],
+      };
+
+    case "GET_REVIEWS":
+      return {
+        ...state,
+        movieReviews: action.payload,
+      };
     //!---------------------------
-    /* case 'FAV_MOVIES':
+    case "FAV_MOVIES":
       return {
         ...state,
-        favMovies: action.payload
-      } */
+        favMovies: action.payload,
+      };
     //!---------------------------
 
     default:

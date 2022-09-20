@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createUser } from "../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-import {newUser} from "../../../../Redux/Actions";
+import { newUser } from "../../../../Redux/Actions";
 
 import "./CreateUser.css";
 
@@ -86,12 +86,11 @@ function CreateUser() {
   function handleSubmit(e) {
     handleValidationPassword(input.password);
     handleValidationEmail(input.email);
-    
+
     e.preventDefault();
     dispatch(createUser(input));
-    let mail ={name:input.username, email:input.email}
-    dispatch(newUser(mail))
-    console.log(mail)
+    let mail = { name: input.username, email: input.email };
+    dispatch(newUser(mail));
     setInput({
       username: "",
       email: "",

@@ -34,7 +34,6 @@ export default function Room() {
 
   function handleClick(e) {
     e.preventDefault();
-    console.log(e.target.outerText);
     if (selected.includes(e.target.outerText)) {
       setSelected(selected.filter((seats) => seats !== e.target.outerText));
       if (e.target.className === "seat select corridor") {
@@ -56,8 +55,6 @@ export default function Room() {
       e.target.className = "seat corridor";
     }
   }
-//  console.log(selected);
-
   function checkOut() {
     let movieCart = {
       schedule_id: roomxd.schedule_id,
@@ -69,18 +66,9 @@ export default function Room() {
     localStorage.setItem("movieCart", JSON.stringify(movieCart));
   }
 
-  // function handleClear(e) {
-  //   e.preventDefault();
-  //   document.querySelectorAll('selec').forEach(element => {
-  //   element.className = 'seat'})
-  //   setSelected([])
-  // };
-
   useEffect(() => {
     getGlobalData();
   }, []);
-
-  //console.log(roomxd)
 
   const checkRender = () => {
     if (Object.keys(roomxd).length > 0) {
@@ -101,7 +89,7 @@ export default function Room() {
                 <ArrowCircleLeftIcon fontSize="large" />
                 GO BACK
               </Link>
-              <Link className="room--button" to={"/Cart/"} onClick={checkOut()}>
+              <Link className="room--button" to={"/cart/"} onClick={checkOut()}>
                 NEXT
                 <ArrowCircleRightIcon fontSize="large" />
               </Link>

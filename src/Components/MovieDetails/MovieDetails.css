@@ -40,6 +40,14 @@
     font-weight: bold;
     font-family: 'Oswald';
 }
+.movie--detail--favbutton{
+    height: auto;
+    width: auto;
+    transition: .3s;
+}.movie--detail--favbutton:hover{
+    color: var(--red);
+    transition: .3s;
+}
 .movie--detail--button--container{
     opacity: .75;
     transition: .3s;

@@ -57,7 +57,6 @@ export function getComingSoon() {
   };
 }
 
-
 //SCHEDULES ACTIONS
 
 export function getAllSchedule() {
@@ -75,7 +74,7 @@ export function getScheduleByMovie(movieId) {
     return axios
       .get(
         "https://api-pf-cine.herokuapp.com/schedules/getSchedules?movie_id=" +
-        movieId
+          movieId
       )
       .then((r) => r.data)
       .then((s) => dispatch({ type: "GET_SCHEDULE_BY_MOVIE", payload: s[0] }))
@@ -189,16 +188,13 @@ export const activateMovie = (id) => async () => {
   }
 };
 
-
 export const resetSearch = () => {
   return {
     type: "RESET_SEARCH",
   };
 };
 
-
 // PRODUCT ADMIN ACTIONS
-
 
 export function getProducts() {
   return function (dispatch) {
@@ -209,7 +205,6 @@ export function getProducts() {
       .catch((err) => console.error(err));
   };
 }
-
 
 export function createProduct(payload) {
   return async function () {
@@ -243,7 +238,6 @@ export function activateProduct(id) {
 
 export function editProduct(id, payload) {
   return async function () {
-    console.log('payload: ', payload)
     const json = await axios
       .put(`https://api-pf-cine.herokuapp.com/products/update/${id}`, payload)
       .then((res) => res.status === 200 && alert("Product edited!"))
@@ -272,7 +266,6 @@ export function createUser(payload) {
 
 export function modifyRole(payload) {
   return async function () {
-    console.log(payload);
     const json = await axios
       .put(`https://api-pf-cine.herokuapp.com/users/modifyRole/`, payload)
       .then((res) => res.status === 200 && alert("Role modified!"))
@@ -293,7 +286,6 @@ export function getAllUsers() {
 
 export function banUser(email) {
   return async function () {
-    console.log(email);
     const json = await axios
       .put(`https://api-pf-cine.herokuapp.com/users/banUser/`, email)
       .then((res) => res.status === 200 && alert("User banned"))
@@ -314,7 +306,6 @@ export function unBanUser(email) {
 
 export function resetUserPassword(payload) {
   return async function () {
-    console.log(payload);
     const json = await axios
       .post(`https://api-pf-cine.herokuapp.com/users/passwordReset`, payload)
       .catch((e) => console.error(e));
@@ -426,11 +417,10 @@ export function createSchedule(payload) {
       .then((res) => res.status === 201 && alert("Schedule Created"))
       .catch((e) => alert(e.message));
     return json;
-  }
+  };
 }
 
 export function deleteSchedule(payload) {
-  console.log(payload);
   return async function () {
     const json = await axios
       .delete(
@@ -456,16 +446,16 @@ export function editSchedule(payload) {
   };
 }
 
-export function resetSchedule(){
+export function resetSchedule() {
   return {
-    type: 'RESET_SCHEDULE_BY_MOVIE'
-  }
+    type: "RESET_SCHEDULE_BY_MOVIE",
+  };
 }
 
 export function delSchedule() {
   return {
-    type: 'DEL_SCHEDULE'
-  }
+    type: "DEL_SCHEDULE",
+  };
 }
 
 // REVIEWS
@@ -481,8 +471,9 @@ export function getMovieReviews(id_movie) {
 }
 
 export function createReview(review) {
-  return function (dispatch) {
-    return axios.post('https://api-pf-cine.herokuapp.com/ratings/create', review)
+  return function () {
+    return axios
+      .post("https://api-pf-cine.herokuapp.com/ratings/create", review)
       .catch((err) => console.error(err));
   };
 }
@@ -490,21 +481,24 @@ export function createReview(review) {
 // MAILS CONTACT
 export function recievedContact(input) {
   return function (dispatch) {
-    return axios.post('https://api-pf-cine.herokuapp.com/mail/contact/', input)
+    return axios
+      .post("https://api-pf-cine.herokuapp.com/mail/contact/", input)
       .catch((err) => console.error(err));
   };
 }
 
 export function sentContact(input) {
   return function (dispatch) {
-    return axios.post('https://api-pf-cine.herokuapp.com/mail/contact/response', input)
+    return axios
+      .post("https://api-pf-cine.herokuapp.com/mail/contact/response", input)
       .catch((err) => console.error(err));
   };
 }
 
 export function newUser(input) {
   return function (dispatch) {
-    return axios.post('https://api-pf-cine.herokuapp.com/mail/register/response', input)
+    return axios
+      .post("https://api-pf-cine.herokuapp.com/mail/register/response", input)
       .catch((err) => console.error(err));
   };
 }
@@ -512,13 +506,33 @@ export function newUser(input) {
 //!Favoritos
 export function setFav(update, user_id) {
   return async function () {
-    const json = await axios.put(`https://api-pf-cine.herokuapp.com/favorites/userFavs/${user_id}`, update)
+    const json = await axios
+      .put(
+        `https://api-pf-cine.herokuapp.com/favorites/userFavs/${user_id}`,
+        update
+      )
       .then((res) =>
-        res.status === 200
-          ? alert("Success!")
-          : alert("Error adding to fav!")
+        res.status === 200 ? alert("Success!") : alert("Error adding to fav!")
       );
     return json;
-
   };
+}
+/* export function getFavs(user_id) {
+  return function (dispatch) {
+    return axios
+      .get(`https://api-pf-cine.herokuapp.com/favorites/userFavs/${user_id}`)
+      .then((r) => r.data)
+      .then((s) => dispatch({ type: "FAV_MOVIES", payload }))
+      .catch((e) => console.log(e));
+  };
+} */
+
+//!payment
+export function postPayment(input) {
+  return function (dispatch) {
+    return axios
+      .post("https://api-pf-cine.herokuapp.com/payment", input)
+      .catch((err) => console.error(err));
+  };
+
 }

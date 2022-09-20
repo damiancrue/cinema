@@ -63,41 +63,6 @@ export function AuthProvider({ children }) {
           .catch((err) => console.log(err));
       }
     );
-
-    //   return await user.getIdToken().then(async (idToken) => {
-    //     window.localStorage.setItem("token", idToken);
-    //     const newUser = {
-    //       email: email,
-    //       token: idToken,
-    //       username: name,
-    //       role: "B",
-    //     };
-    //     return await axios.post(
-    //       //"https://api-pf-cine.herokuapp.com/users/createUser",
-    //       "http://localhost:3001/users/createUser",
-    //       newUser
-    //       //  {
-    //       //   headers: {
-    //       //     Authorization: "Bearer " + idToken,
-    //       //   },
-    //       //   role: "B",
-    //       //   username:"papa",
-    //       //   email: "papa@papa.com"
-    //       // }
-    //     );
-    //   });
-    // })
-    // .then((res) => {
-    //   if (res.status === 201) {
-    //     console.log("Usuario creado");
-    //   } else if (res.status === 400 || res.status === 500) {
-    //     console.log("Usuario no creado, verificar");
-    //     console.log(res.data.message);
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
   const logIn = async (email, password) => {
     const credentials = await signInWithEmailAndPassword(
